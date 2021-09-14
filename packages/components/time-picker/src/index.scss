@@ -1,0 +1,71 @@
+
+@import "../../../theme.scss";
+
+.yuumi-time-picker {
+  display: inline-table;
+  box-sizing: border-box;
+  border: 1px solid map-get($--color, "border");
+  border-radius: map-get($--border-radius, "primary");
+  cursor: pointer;
+  transition: border-color 0.3s;
+
+  .picker__icon, .picker__content, .picker__suffix {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .picker__icon, .placeholder, .picker__suffix {
+    color: map-get($--color, "placeholder");
+  }
+
+  .picker__content {
+    .content-hyphen {
+      padding: 0 map-get($--space, "sm") * 0.5;
+    }
+
+    .content-time {
+      min-width: 70px;
+      display: inline-block;
+      text-align: center;
+    }
+  }
+
+  @each $key, $value in $--height {
+    &.size__#{$key} {
+      height: $value;
+
+      .picker__icon, .picker__suffix {
+        text-align: center;
+        width: $value;
+      }
+    }
+  }
+
+  &.__focus {
+    border-color: map-get($--color, "primary");
+  }
+
+  &.__disabled {
+    border-color: map-get($--color, "disabled");
+    color: map-get($--text-color, "secondary");
+    cursor: no-drop;
+    opacity: 0.5;
+    user-select: none;
+  }
+}
+
+.time-picker-btns {
+  text-align: right;
+  border-top: 1px solid map-get($--color, "border");
+  padding: map-get($--space, "xm") * 0.5 map-get($--space, "sm");
+
+  >span {
+    margin-left: map-get($--space, "sm");
+    cursor: pointer;
+    font-size: 14px;
+
+    &:nth-child(2) {
+      color: map-get($--color, "primary");
+    }
+  }
+}

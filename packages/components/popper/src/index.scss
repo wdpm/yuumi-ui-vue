@@ -1,0 +1,88 @@
+@import "../../../theme.scss";
+
+$border-width: 6px;
+
+.yuumi-popper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: nth($--index, 2);
+
+  .popper__content {
+    border: 1px solid map-get($--color, "border");
+    border-radius: map-get($--border-radius, "primary");
+    background-color: #ffffff;
+  }
+
+  .popper__arrow {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border: $border-width solid transparent;
+
+    &::after {
+      content: '';
+      border: $border-width solid transparent;
+      display: block;
+      position: absolute;
+    }
+  }
+
+  &[data-popper-placement^=top] {
+    .popper__arrow {
+      border-top-color: map-get($--color, "border");
+      top: 100%;
+
+      &::after {
+        border-top-color: #ffffff;
+        left: -$border-width;
+        top: -($border-width + 1px);
+      }
+    }
+  }
+
+  &[data-popper-placement^=bottom] {
+    .popper__arrow {
+      border-bottom-color: map-get($--color, "border");
+      top: -$border-width*2;
+
+      &::after {
+        border-bottom-color: #ffffff;
+        left: -$border-width;
+        top: -($border-width - 1px);
+      }
+    }
+  }
+
+  &[data-popper-placement^=left] {
+    .popper__arrow {
+      border-left-color: map-get($--color, "border");
+      left: 100%;
+
+      &::after {
+        border-left-color: #ffffff;
+        left: -($border-width + 1px);
+        top: -$border-width;
+      }
+    }
+  }
+
+  &[data-popper-placement^=right] {
+    .popper__arrow {
+      border-right-color: map-get($--color, "border");
+      left: -$border-width*2;
+
+      &::after {
+        border-right-color: #ffffff;
+        left: -($border-width - 1px);
+        top: -$border-width;
+      }
+    }
+  }
+}
+.yuumi-popper-enter-active, .yuumi-popper-leave-active {
+  transition: opacity .2s;
+}
+.yuumi-popper-enter-from, .yuumi-popper-leave-to {
+  opacity: 0;
+}

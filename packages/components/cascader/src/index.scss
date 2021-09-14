@@ -1,0 +1,124 @@
+@import "../../../theme.scss";
+
+.yuumi-cascader {
+  display: inline-table;
+  border: 1px solid map-get($--color, "border");
+  box-sizing: border-box;
+  border-radius: map-get($--border-radius, "primary");
+  cursor: pointer;
+  transition: border-color 0.3s;
+
+  .cascader__label, .cascader__placeholder, .cascader__icon {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .cascader__label, .cascader__placeholder {
+    padding-left: map-get($--space, "xm");
+  }
+
+  .cascader__placeholder {
+    color: map-get($--color, "placeholder");
+  }
+
+  .cascader__icon {
+    text-align: center;
+    width: map-get($--space, "md");
+    color: map-get($--color, "border");
+    transition: transform 0.3s;
+    line-height: 0;
+  }
+
+  &.__focus {
+    border-color: map-get($--color, "primary");
+
+    .cascader__icon.__arrow {
+      transform: rotate(-180deg);
+    }
+  }
+
+  &.__readonly {
+    cursor: default;
+  }
+
+  &.__disabled {
+    opacity: 0.5;
+    cursor: no-drop;
+  }
+
+  @each $key, $value in $--height {
+    &.size__#{$key} {
+      height: $value;
+      min-width: $value*3;
+    }
+  }
+
+  @each $key in $--theme {
+    &.theme__#{$key}  {
+      border-color: map-get($--color, $key);
+      color: map-get($--color, $key);
+
+      .cascader__placeholder {
+        color: rgba(map-get($--color, $key), .5);
+      }
+    }
+  }
+}
+
+.yuumi-cascader-menu {
+  vertical-align: top;
+  display: inline-block;
+  box-sizing: border-box;
+  height: 216px;
+
+  @each $key in $--theme {
+    &.theme__#{$key}  {
+      .menu-item.__active {
+        color: map-get($--color, $key);
+      }
+    }
+  }
+
+  &:not(:first-child) {
+    border-left: 1px solid map-get($--color, "border");
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+      list-style: none;
+      padding: map-get($--space, "xm") map-get($--space, "lg") map-get($--space, "xm") map-get($--space, "sm");
+      cursor: pointer;
+    }
+  }
+
+  .menu-item {
+    position: relative;
+
+    &:hover {
+      background-color: rgba(map-get($--color, "border"), .5);
+    }
+
+    &.__active {
+      background-color: rgba(map-get($--color, "border"), .5);
+      color: map-get($--color, "primary");
+    }
+
+    &.__disabled {
+      opacity: 0.5;
+      cursor: no-drop;
+      background-color: transparent;
+    }
+
+    .item__icon {
+      font-size: map-get($--font-size, "xm");
+      display: block;
+      position: absolute;
+      right: map-get($--space, "xm");
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}

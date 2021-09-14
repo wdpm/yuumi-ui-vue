@@ -1,0 +1,31 @@
+@import "../../../theme.scss";
+.yuumi-tooltip {
+  display: inline-block;
+
+  &.yuumi-popper {
+    .popper__content {
+      border-radius: map-get($--border-radius, "primary");
+      padding: map-get($--space, "xm");
+    }
+  }
+
+  &.theme__dark {
+    .popper__content {
+      border-color: map-get($--color, "dark");
+      background-color: map-get($--color, "dark");
+      color: map-get($--color, "white");
+    }
+
+    @each $key in ('top', 'bottom', 'left', 'right') {
+      &[data-popper-placement^=#{$key}] {
+        .popper__arrow {
+          border-#{$key}-color: map-get($--color, "dark");
+
+          &::after {
+            border-#{$key}-color: map-get($--color, "dark");
+          }
+        }
+      }
+    }
+  }
+}

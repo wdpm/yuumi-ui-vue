@@ -1,0 +1,139 @@
+@import '../../theme.scss';
+
+.yuumi-notification {
+  width: 300px;
+  background-color: map-get($--color, "white");
+  border-radius: map-get($--border-radius, "primary");
+  padding: map-get($--space, "sm");
+  box-shadow: 0 0 map-get($--space, "sm") nth($--box-shadow-color, 2);
+  position: fixed;
+  z-index: nth($--index, 2);
+
+  @each $key in ("primary", "warn", "success", "error") {
+    &.theme__#{$key} {
+      .notification-icon {
+        color: map-get($--color, $key);
+      }
+    }
+  }
+
+  &.appeared {
+    transition: top 0.3s, bottom 0.3s;
+  }
+
+  &.direction__tl {
+    top: 0;
+    left: map-get($--space, "sm");
+  }
+
+  &.direction__tr {
+    top: 0;
+    right: map-get($--space, "sm");
+  }
+
+  &.direction__bl {
+    bottom: 0;
+    left: map-get($--space, "sm");
+  }
+
+  &.direction__br {
+    bottom: 0;
+    right: map-get($--space, "sm");
+  }
+
+  .notification-close {
+    position: absolute;
+    top: map-get($--space, "xm");
+    right: map-get($--space, "xm");
+    cursor: pointer;
+  }
+
+  .notification-icon {
+    float: left;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .notification-content {
+    overflow: hidden;
+    padding: 0 map-get($--space, "sm");
+    line-height: 24px;
+
+    .content-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: map-get($--space, "xm");
+    }
+
+    .content-body {
+      font-size: 14px;
+      color: map-get($--text-color, "secondary");
+    }
+  }
+}
+
+.yuumi-notification-enter-active.direction__tr, .yuumi-notification-enter-active.direction__br {
+  animation-name: notificationRightEntry;
+}
+
+.yuumi-notification-enter-active.direction__tl, .yuumi-notification-enter-active.direction__bl {
+  animation-name: notificationLeftEntry;
+}
+
+.yuumi-notification-enter-active {
+  animation-duration: .6s;
+  animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation-fill-mode: both;
+}
+
+.yuumi-notification-leave-active {
+  transition: opacity 0.3s, top 0.3s, bottom 0.3s !important;
+}
+
+.yuumi-notification-leave-to {
+  opacity: 0;
+}
+
+@keyframes notificationRightEntry {
+  0% {
+    transform: translate3d(200%, 0, 0);
+
+    opacity: 0;
+  }
+  60% {
+    transform: translate3d(-25px, 0, 0);
+
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(10px, 0, 0);
+  }
+  90% {
+    transform: translate3d(-5px, 0, 0);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes notificationLeftEntry {
+  0% {
+    transform: translate3d(-200%, 0, 0);
+
+    opacity: 0;
+  }
+  60% {
+    transform: translate3d(25px, 0, 0);
+
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  90% {
+    transform: translate3d(5px, 0, 0);
+  }
+  100% {
+    transform: none;
+  }
+}

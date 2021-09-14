@@ -1,0 +1,28 @@
+@import '../../theme.scss';
+
+.yuumi-message {
+  width: 320px;
+  display: flex;
+  align-items: center;
+
+  position: fixed;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  z-index: nth($--index, 2);
+
+  &.appeared {
+    transition: top 0.3s;
+  }
+
+  .message-content {
+    padding: 0 map-get($--space, "xm");
+  }
+}
+
+.yuumi-message-enter-active, .yuumi-message-leave-active {
+  transition: opacity 0.3s, top 0.3s !important;
+}
+
+.yuumi-message-enter-from, .yuumi-message-leave-to {
+  opacity: 0;
+}

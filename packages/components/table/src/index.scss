@@ -1,0 +1,162 @@
+@import "../../../theme.scss";
+
+.yuumi-table {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  &.__border {
+    border: 1px solid map-get($--color, "border");
+    border-bottom: none;
+
+    table {
+      th, td {
+        &:not(:first-child) {
+          border-left: 1px solid map-get($--color, "border");
+        }
+      }
+    }
+
+    &.__scroll-end {
+      table td, table th {
+        &.sticky__right.sticky__first {
+          border-left-color: map-get($--color, "border");
+        }
+      }
+    }
+  }
+
+  &.__stripe {
+    table tr:nth-child(even) {
+      td {
+        background-color: mix(map-get($--color, "light"), map-get($--color, "white"), 45%);
+      }
+
+      &:hover td {
+        background-color: mix(map-get($--color, "primary"), map-get($--color, "white"), 6%);
+      }
+    }
+  }
+
+  &.__scroll-start {
+    table td, table th {
+      &.sticky__left.sticky__last::after {
+        box-shadow: none;
+      }
+    }
+  }
+
+  &.__scroll-end {
+    table td, table th {
+      &.sticky__right.sticky__first::after {
+        box-shadow: none;
+      }
+    }
+  }
+
+  $_padding: (
+    "default": map-get($--space, "sm"),
+    "middle": map-get($--space, "sm") * 0.75,
+    "small": map-get($--space, "xm"),
+  );
+
+  @each $key in ("default", "middle", "small") {
+    &.size__#{$key} table {
+      th .column, td .column {
+        padding: map-get($_padding, $key) map-get($--space, "xm");
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    height: 100%;
+
+    th .column, td .column {
+      text-align: left;
+
+      &._center {
+        text-align: center;
+      }
+
+      &._right {
+        text-align: right;
+      }
+    }
+
+    th, td {
+      background-color: map-get($--color, "white");
+      border-bottom: 1px solid map-get($--color, "border");
+      color: map-get($--text-color, "secondary");
+      box-sizing: border-box;
+      transition: background .2s;
+
+      &[class^=sticky] {
+        position: sticky;
+      }
+
+      $box-shadow-width: map-get($--space, "xm");
+      &.sticky__left.sticky__last, &.sticky__right.sticky__first {
+        z-index: 2;
+
+        &::after {
+          display: block;
+          content: "";
+          width: $box-shadow-width;
+          height: 100%;
+          position: absolute;
+          top: 0;
+        }
+      }
+
+      &.sticky__left.sticky__last {
+        border-right-color: transparent;
+
+        &::after {
+          right: -$box-shadow-width;
+          box-shadow: $box-shadow-width 0 $box-shadow-width (-$box-shadow-width) nth($--box-shadow-color, 1) inset;
+        }
+      }
+
+      &.sticky__right.sticky__first {
+        border-left-color: transparent;
+
+        &::after {
+          left: -$box-shadow-width;
+          box-shadow: (-$box-shadow-width) 0 $box-shadow-width (-$box-shadow-width) nth($--box-shadow-color, 1) inset;
+        }
+      }
+
+      &.__scrollbar, &.__scrollbar {
+        border-left: 1px solid map-get($--color, "border");
+      }
+    }
+
+    th.__scrollbar {
+      background-color: map-get($--color, "white");
+      border-bottom: none;
+    }
+
+    tr {
+      &:hover td{
+        background-color: mix(map-get($--color, "primary"), map-get($--color, "white"), 6%);
+      }
+    }
+  }
+
+  .table--header, .table--footer {
+    width: 100%;
+    overflow: hidden;
+
+    table th, table td {
+      background-color: map-get($--color, "light");
+    }
+  }
+
+  .table--body {
+    // width: 100%;
+    // height: 100%;
+    overflow: auto;
+  }
+}

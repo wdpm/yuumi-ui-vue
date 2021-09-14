@@ -1,0 +1,108 @@
+@import '../../theme.scss';
+
+[data-loading-id] {
+  position: relative !important;
+}
+
+.yuumi-loading {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: nth($--index, 3);
+
+  background-color: rgba(map-get($--color, "white"), 0.7);
+
+  &.__fixed {
+    position: fixed;
+  }
+
+  .loading-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+}
+
+.yuumi-loading-enter-active, .yuumi-loading-leave-active {
+  transition: opacity 0.3s;
+}
+
+.yuumi-loading-enter-from, .yuumi-loading-leave-to {
+  opacity: 0;
+}
+
+.loading__pie {
+  display: inline-block;
+  width: map-get($--height, "lg");
+  height: map-get($--height, "lg");
+  animation: spinnerRotate 1.6s linear infinite;
+
+  circle {
+    animation: spinnerPie 1.6s ease infinite;
+    stroke-linecap: round;
+    stroke: map-get($--color, "primary");
+  }
+}
+
+@keyframes spinnerRotate {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes spinnerPie {
+  0% {
+    stroke-dasharray: 0%, 400%;
+    stroke-dashoffset: 0%;
+  }
+  50% {
+    stroke-dasharray: 200%, 400%;
+    stroke-dashoffset: -20%;
+  }
+  100% {
+    stroke-dasharray: 0%, 400%;
+    stroke-dashoffset: -250%;
+  }
+}
+
+.loading__rect {
+  display: inline-block;
+  height: map-get($--height, "md");
+  text-align: center;
+
+  $duration: 1.2s;
+
+  div[class^="rect"] {
+    display: inline-block;
+    width: 3px;
+    height: 100%;
+    margin-right: 3px;
+    animation: spinnerRect $duration infinite ease-in-out;
+    border-radius: 500px;
+    background-color: map-get($--color, "primary");
+
+    @each $key in (2, 3, 4, 5) {
+      &:nth-child(#{$key}) {
+        animation-delay: $key*0.1s - $duration;
+      }
+    }
+  }
+}
+
+@keyframes spinnerRect {
+  0% {
+    transform: scaleY(0.5);
+  }
+  20% {
+    transform: scaleY(1.0);
+  }
+  40% {
+    transform: scaleY(0.5);
+  }
+  100% {
+    transform: scaleY(0.5);
+  }
+}

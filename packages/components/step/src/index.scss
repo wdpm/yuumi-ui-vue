@@ -1,0 +1,191 @@
+@import "../../../theme.scss";
+
+$size: (
+  default: map-get($--height, "sm"),
+  mini: map-get($--height, "xm"),
+);
+
+.yuumi-step {
+  display: flex;
+
+  .yuumi-step-item {
+    position: relative;
+    flex: 1 1 auto;
+
+    &:last-child {
+      flex: none;
+
+      .step-item__line {
+        display: none;
+      }
+    }
+
+    &.__completed {
+      .step-item__icon {
+        border-color: map-get($--color, "primary");
+        color: map-get($--color, "primary");
+      }
+    }
+
+    &.__processing {
+      .step-item__icon {
+        border-color: map-get($--color, "primary");
+        background-color: map-get($--color, "primary");
+        color: map-get($--color, "white");
+
+        &.__custom {
+          color: map-get($--color, "primary");
+        }
+      }
+
+      .step-item__body {
+        color: map-get($--text-color, "primary");
+      }
+    }
+
+    &.__waiting {
+      .step-item__icon {
+        color: map-get($--color, "border");
+        border-color: map-get($--color, "border");
+      }
+    }
+
+    &.__error {
+      .step-item__icon {
+        color: map-get($--color, "error");
+        border-color: map-get($--color, "error");
+        background-color: map-get($--color, "white");;
+      }
+
+      .step-item__body {
+        color: map-get($--color, "error");
+      }
+    }
+
+    .step-item__icon {
+      float: left;
+      position: relative;
+      z-index: 1;
+
+      width: map-get($size, "default");
+      height: map-get($size, "default");
+      border: 1px solid transparent;
+      background-color: map-get($--color, "white");
+      border-radius: 50%;
+      box-sizing: border-box;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      transition: all 0.3s;
+
+      &.__custom {
+        font-size: 1.14em;
+        background-color: map-get($--color, "white");
+        border-color: map-get($--color, "white");
+      }
+    }
+
+    .step-item__body {
+      position: relative;
+      z-index: 1;
+
+      display: table-cell;
+      color: mix(map-get($--color, "black"), map-get($--color, "white"), 45%);
+    }
+
+    .step-item__line {
+      position: absolute;
+      box-sizing: border-box;
+
+      &::before {
+        content: " ";
+        display: block;
+        background-color: map-get($--color, "border");
+      }
+    }
+
+    .step-item__title {
+      display: inline-block;
+      padding: 0 map-get($--space, "xm");
+      font-weight: bold;
+      line-height: map-get($size, "default");
+      font-size: map-get($--font-size, "sm");
+      background-color: map-get($--color, "white");
+    }
+
+    .step-item__description  {
+      padding: 0 map-get($--space, "xm");
+      font-size: map-get($--font-size, "xm");
+    }
+  }
+
+  &.__horizontal {
+    flex-direction: row;
+
+    .yuumi-step-item:not(:last-child) {
+      padding-right: map-get($--space, "sm");
+    }
+
+    .step-item__line {
+      padding-left: map-get($--space, "xm") + map-get($size, "default");
+      padding-right: map-get($--space, "xm");
+      width: 100%;
+      top: map-get($size, "default")*0.5;
+      left: 0;
+      transform: translateY(-50%);
+
+      &::before {
+        width: 100%;
+        height: 2px;
+      }
+    }
+  }
+
+  &.__vertical {
+    height: 100%;
+    flex-direction: column;
+
+    .yuumi-step-item:not(:last-child) {
+      padding-bottom: map-get($--space, "sm");
+    }
+
+    .step-item__line {
+      padding-top: map-get($--space, "xm") + map-get($size, "default");
+      padding-bottom: map-get($--space, "xm");
+      height: 100%;
+      top: 0;
+      left: map-get($size, "default")*0.5;
+      transform: translateX(-50%);
+
+      &::before {
+        height: 100%;
+        width: 2px;
+      }
+    }
+  }
+
+  &.__mini {
+    .yuumi-step-item {
+      .step-item__icon {
+        width: map-get($size, "mini");
+        height: map-get($size, "mini");
+      }
+
+      .step-item__title {
+        line-height: map-get($size, "mini");
+      }
+    }
+
+    &.__horizontal .yuumi-step-item .step-item__line {
+      padding-left: map-get($--space, "xm") + map-get($size, "mini");
+      top: map-get($size, "mini")*0.5;
+    }
+
+    &.__vertical .yuumi-step-item .step-item__line {
+      padding-top: map-get($--space, "xm") + map-get($size, "mini");
+      left: map-get($size, "mini")*0.5;
+    }
+  }
+}

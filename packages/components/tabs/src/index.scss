@@ -1,0 +1,228 @@
+@import "../../../theme.scss";
+
+.yuumi-tabs {
+  .tabs__header {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    .navs__prev, .navs__next {
+      padding: 0 map-get($--space, "xm")*0.5;
+      flex: 0 0 auto;
+      cursor: pointer;
+
+      &:active {
+        color: map-get($--color, "primary");
+      }
+    }
+  }
+
+  .navs {
+    flex: 1 1 1px;
+    overflow: hidden;
+
+    .navs__body {
+      float: left;
+      transition: transform 0.3s;
+      min-width: 100%;
+      white-space: nowrap;
+
+      .nav-item {
+        padding: map-get($--space, "xm");
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &.__active {
+          color: map-get($--color, "primary");
+        }
+      }
+    }
+
+    .navs__line {
+      background-color: map-get($--color, "border");
+      border-radius: 2px;
+      overflow: hidden;
+
+      .line-rect {
+        transition: transform 0.3s, width 0.3s;
+        background-color: map-get($--color, "primary");
+      }
+    }
+  }
+
+  .tabs__panel {
+    padding: 0 map-get($--space, "xm");
+  }
+
+  @each $key in ("top", "right", "bottom", "left") {
+    @if $key == "left" or $key == "right" {
+      &.position__#{$key} {
+        height: 100%;
+
+        .tabs__header {
+          flex-direction: column;
+          height: 100%;
+
+          @if $key == "left" {
+            float: left;
+          } @else {
+            float: right;
+          }
+
+          .navs__prev, .navs__next {
+            padding: map-get($--space, "xm");
+          }
+        }
+
+        .navs {
+          .navs__line {
+            height: 100%;
+            width: 2px;
+            position: absolute;
+            top: 0;
+            @if $key == "left" {
+              right: 0;
+            } @else {
+              left: 0;
+            }
+
+            .line-rect {
+              width: 100%;
+              height: 0;
+            }
+          }
+        }
+
+        .tabs__panel {
+          overflow: hidden;
+          padding: map-get($--space, "xm");
+        }
+
+        &.__card {
+          .navs .navs__body {
+            box-sizing: border-box;
+            @if $key == "left" {
+              border-right: 1px solid map-get($--color, "border");
+            } @else {
+              border-left: 1px solid map-get($--color, "border");
+            }
+
+            .nav-item {
+              position: relative;
+              border: 1px solid map-get($--color, "border");
+              box-sizing: border-box;
+              background-color: map-get($--color, "light");
+
+              @if $key == "left" {
+                border-top-left-radius: map-get($--border-radius, "primary");
+                border-bottom-left-radius: map-get($--border-radius, "primary");
+                margin-right: -1px;
+              } @else {
+                border-top-right-radius: map-get($--border-radius, "primary");
+                border-bottom-right-radius: map-get($--border-radius, "primary");
+                margin-left: -1px;
+              }
+
+
+              &:not(:last-child) {
+                margin-bottom: map-get($--space, "xm")*0.5;
+              }
+
+              &.__active {
+                @if $key == "left" {
+                  border-right-color: map-get($--color, "white");
+                } @else {
+                  border-left-color: map-get($--color, "white");
+                }
+                background-color: map-get($--color, "white");
+              }
+            }
+          }
+        }
+      }
+    } @else {
+      &.position__#{$key} {
+        .tabs__header {
+          flex-direction: row;
+
+          @if $key == "top" {
+            margin-bottom: map-get($--space, "sm");
+          } @else {
+            margin-top: map-get($--space, "sm");
+          }
+        }
+
+        .navs  {
+          .nav-item {
+            display: inline-block;
+          }
+
+          .navs__line {
+            width: 100%;
+            height: 2px;
+
+            .line-rect {
+              width: 0;
+              height: 100%;
+            }
+          }
+        }
+
+        &.__card {
+          .navs .navs__body {
+            box-sizing: border-box;
+            @if $key == "top" {
+              border-bottom: 1px solid map-get($--color, "border");
+            } @else {
+              border-top: 1px solid map-get($--color, "border");
+            }
+
+            .nav-item {
+              position: relative;
+              border: 1px solid map-get($--color, "border");
+              box-sizing: border-box;
+              background-color: map-get($--color, "light");
+
+              @if $key == "top" {
+                border-top-left-radius: map-get($--border-radius, "primary");
+                border-top-right-radius: map-get($--border-radius, "primary");
+                margin-bottom: -1px;
+              } @else {
+                border-bottom-left-radius: map-get($--border-radius, "primary");
+                border-bottom-right-radius: map-get($--border-radius, "primary");
+                margin-top: -1px;
+              }
+
+
+              &:not(:last-child) {
+                margin-right: map-get($--space, "xm")*0.5;
+              }
+
+              &.__active {
+                @if $key == "top" {
+                  border-bottom-color: map-get($--color, "white");
+                } @else {
+                  border-top-color: map-get($--color, "white");
+                }
+                background-color: map-get($--color, "white");
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.yuumi-tabs-enter-active {
+  transition: opacity 0.3s;
+}
+
+.yuumi-tabs-enter-from {
+  opacity: 0;
+}
+
+.yuumi-tabs-leave-active {
+  position: absolute;
+}

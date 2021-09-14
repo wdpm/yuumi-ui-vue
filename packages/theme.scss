@@ -1,0 +1,65 @@
+$--color: (
+  "primary": #0d6efd,
+  "success": #00b450,
+  "error": #dc3545,
+  "warn": #ffc107,
+
+  "info": #0dcaf0,
+
+  "light": mix(#000000, #FFFFFF, 4%),
+  "dark": mix(#000000, #FFFFFF, 96%),
+
+  "white": #ffffff,
+  "black": #000000,
+
+  "disabled": mix(#000000, #FFFFFF, 25%),
+  "border": mix(#000000, #FFFFFF, 15%),
+  "placeholder": mix(#000000, #FFFFFF, 15%),
+  "divider": mix(#000000, #FFFFFF, 6%),
+);
+
+$--theme: "primary", "success", "error", "warn";
+
+$--text-color: (
+  "primary": mix(#000000, #FFFFFF, 85%),
+  "secondary": mix(#000000, #FFFFFF, 65%),
+  "tertiary": mix(#000000, #FFFFFF, 45%),
+);
+
+$--font-size: (
+  "xm": 12px,
+  "sm": 14px,
+  "md": 16px,
+  "lg": 20px,
+  "xl": 24px
+);
+
+$--height: (
+  "xm": 24px,
+  "sm": 28px,
+  "md": 32px,
+  "lg": 38px,
+  "xl": 46px
+);
+
+$--border-radius: (
+  "primary": 4px,
+  "secondary": 2px,
+  "round": 9999px,
+  "circle": 100%
+);
+
+$--space: (
+  "xm": 8px,
+  "sm": 16px,
+  "md": 24px,
+  "lg": 32px,
+  "xl": 40px
+);
+
+$--index: 1, 9, 99;
+
+$--box-shadow-color:
+  rgba(0,0,0, 0.16),
+  rgba(0,0,0, 0.12),
+  rgba(0,0,0, 0.08);

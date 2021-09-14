@@ -1,0 +1,63 @@
+@import "../../../theme.scss";
+
+.yuumi-tree {
+  .tree-node {
+    overflow: hidden;
+    cursor: pointer;
+
+    > .child-tree {
+      margin-left: 1.5em;
+    }
+
+    &.__leaf {
+      padding-left: 1.5em;
+    }
+  }
+
+  .tree-node .node-content {
+    display: flex;
+    align-items: center;
+
+    > :not(:first-child) {
+      margin-left: 0.5em;
+    }
+
+    .expand-icon {
+      transition: transform 0.2s;
+      transform: rotate(-90deg);
+
+      &.__active {
+        transform: rotate(0deg);
+      }
+
+      &.__loading {
+        animation: nodeChildrenLoading 1s linear infinite;
+      }
+    }
+
+    .checkbox-icon {
+      line-height: 1em;
+
+      .yuumi-checkbox > .checkbox__content {
+        padding-left: 0;
+      }
+    }
+
+    .content__label {
+      padding-right: map-get($--space, "xm");
+    }
+  }
+}
+
+.node-children-enter-active, .node-children-leave-active {
+  transition: height .2s;
+}
+.node-children-enter-from, .node-children-leave-to {
+  height: 0;
+}
+
+@keyframes nodeChildrenLoading {
+  100% {
+    transform: rotate(1turn);
+  }
+}
