@@ -234,6 +234,11 @@ $header-height: 60px;
   .vuedoc-demo__preview {
     color: #333333;
   }
+
+  >.vuedoc__hljs {
+    background-color: #fafafa;
+    border: 1px solid #eaeefb;
+  }
 }
 
 :deep(.vuedoc-demo__footer:hover) {
