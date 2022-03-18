@@ -38,6 +38,10 @@
         text-align: center;
         width: $value;
       }
+
+      .picker__icon {
+        font-size: $value*0.5;
+      }
     }
   }
 

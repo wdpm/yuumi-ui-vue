@@ -24,7 +24,7 @@
 
         <template #default="{$props, $attrs, $value}">
           {{students[$attrs.rowIndex][$props.prop]}}
-          <YuumiIcon icon="flat-like" v-if="$value > 640" style="color: green;"></YuumiIcon>
+          <YuumiIcon icon="flat-praise" v-if="$value > 640" style="color: green;"></YuumiIcon>
         </template>
 
         <template #footer="{$value}">

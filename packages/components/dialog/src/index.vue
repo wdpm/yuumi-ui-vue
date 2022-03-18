@@ -196,11 +196,13 @@ $panel-top: 50%;
     }
 
     .dialog-close {
+      display: block;
       position: absolute;
       right: map-get($--space, "xm");
       top: 50%;
       transform: translateY(-50%);
       cursor: pointer;
+      font-size: 1.14em;
     }
   }
 

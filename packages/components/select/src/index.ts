@@ -116,7 +116,7 @@ export default defineComponent({
         onClick: onClear
       } : {
         class: 'select__icon __arrow',
-        icon: 'flat-arrow-bottom-small'
+        icon: 'flat-arrow-bottom'
       }
 
       return h(createVNode(_YuumiIcon, _props))
@@ -182,7 +182,7 @@ export default defineComponent({
           onClick: () => onSelectItem(item)
         }, [
           h('span', null, getLabel(item)),
-          h(_YuumiIcon, { icon: 'correct' })
+          h(_YuumiIcon, { icon: 'line-correct' })
         ])
       })
 

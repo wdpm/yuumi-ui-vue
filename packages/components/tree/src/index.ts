@@ -7,7 +7,7 @@ export default defineComponent({
   props: {
     data: { type: Array },
     optionKey: { type: Object },
-    expandIcon: { type: Object, default: () => ({ icon: 'flat-arrow-bottom-small' })},
+    expandIcon: { type: Object, default: () => ({ icon: 'flat-arrow-bottom' })},
     checkable: { type: Boolean, default: true },
     loadData: { type: Function }
   },

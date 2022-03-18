@@ -26,7 +26,7 @@ export default defineComponent({
       if (isVNode(icon)) { return icon }
 
       if (index < active) {
-        return h(resolveComponent('YuumiIcon'), { icon: 'correct' })
+        return h(resolveComponent('YuumiIcon'), { icon: 'line-correct' })
       }
 
       return h('span', {}, [index + 1])

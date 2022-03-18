@@ -2,7 +2,7 @@
 <div class="yuumi-empty" v-bind="$attrs">
   <div class="empty__image">
     <img v-if="image" :src="image" :style="{ width: imageSize + 'px' }" alt="empty">
-    <YuumiIcon v-else icon="empty" :style="{ fontSize: imageSize + 'px' }"></YuumiIcon>
+    <YuumiIcon v-else icon="line-empty" :style="{ fontSize: imageSize + 'px' }"></YuumiIcon>
   </div>
 
   <div class="empty__description" v-if="description">{{description}}</div>

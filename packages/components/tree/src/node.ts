@@ -214,7 +214,7 @@ export default defineComponent({
       let _props: any = null
 
       if (childrenLoadState === loadingState.loading) {
-        _props = mergeProps({ icon: 'circle-loading' })
+        _props = mergeProps({ icon: 'line-loading' })
       } else if (!isLeaf) {
         _props = mergeProps(expandIcon)
       }

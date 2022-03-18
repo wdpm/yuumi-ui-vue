@@ -120,7 +120,7 @@ export default defineComponent({
       return h('div', { class: 'tabs__header', ref: 'tabsElement' }, [
         hasScrollbar && h(_iconComponent, {
           class: 'navs__prev',
-          icon: _isVertical ? 'line-left': 'line-top',
+          icon: _isVertical ? 'line-arrow-left': 'line-arrow-top',
           onClick: () => updateNavsPosition(-1)
         }),
 
@@ -128,7 +128,7 @@ export default defineComponent({
 
         hasScrollbar && h(_iconComponent, {
           class: 'navs__next',
-          icon: _isVertical ? 'line-right' : 'line-bottom',
+          icon: _isVertical ? 'line-arrow-right' : 'line-arrow-bottom',
           onClick: () => updateNavsPosition(1)
         })
       ])
