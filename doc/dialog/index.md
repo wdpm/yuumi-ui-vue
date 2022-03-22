@@ -4,7 +4,7 @@
 <template>
 <YuumiButton @click="showDialog">show dialog</YuumiButton>
 <YuumiDialog title="dialog title" v-model="show" @close="onclose" @cancel="oncancel" @confirm="onconfirm">
-  <YuumiIcon icon="line-help" style="vertical-align: middle;" ></YuumiIcon>
+  <YuumiIcon icon="line-help" ></YuumiIcon>
   <span>基本用法</span>
 </YuumiDialog>
 </template>
@@ -44,7 +44,7 @@ export default {
 <YuumiButton @click="showDialog({cancelEnable: false, confirmEnable: false})" style="margin: 0 10px 10px 0;">不显示取消和确认</YuumiButton>
 
 <YuumiDialog title="dialog title" v-model="show" v-bind="enable">
-  <YuumiIcon icon="line-help" style="vertical-align: middle;" ></YuumiIcon>
+  <YuumiIcon icon="line-help" ></YuumiIcon>
   <span>部分显示</span>
 </YuumiDialog>
 </template>
@@ -73,7 +73,7 @@ export default {
 <template>
 <YuumiButton @click="showDialog">自定义按钮文字</YuumiButton>
 <YuumiDialog title="dialog title" v-model="show" cancel-text="撤销" confirm-text="保存">
-  <YuumiIcon icon="line-help" style="vertical-align: middle;" ></YuumiIcon>
+  <YuumiIcon icon="line-help" ></YuumiIcon>
   <span>自定义按钮文字</span>
 </YuumiDialog>
 </template>
@@ -100,7 +100,7 @@ export default {
 <template>
 <YuumiButton @click="showDialog">异步操作</YuumiButton>
 <YuumiDialog title="dialog title" v-model="show" :sync="false" @close="onclose" @cancel="oncancel" @confirm="onconfirm">
-  <YuumiIcon icon="line-help" style="vertical-align: middle;" ></YuumiIcon>
+  <YuumiIcon icon="line-help" ></YuumiIcon>
   <span>异步操作</span>
 </YuumiDialog>
 </template>
@@ -160,7 +160,7 @@ export default {
   @beforeLeave="onEvent($event, 'beforeLeave')"
   @afterLeave="onEvent($event, 'afterLeave')"
 >
-  <YuumiIcon icon="line-help" style="vertical-align: middle;" ></YuumiIcon>
+  <YuumiIcon icon="line-help" ></YuumiIcon>
   <span>事件监听</span>
 </YuumiDialog>
 </template>
@@ -193,7 +193,7 @@ export default {
 <YuumiButton @click="showDialog">阻止穿透</YuumiButton>
 
 <YuumiDialog title="dialog title" v-model="show" :stopPenetrate="true">
-  <YuumiIcon icon="line-help" style="vertical-align: middle;" ></YuumiIcon>
+  <YuumiIcon icon="line-help" ></YuumiIcon>
   <span>阻止穿透</span>
 </YuumiDialog>
 </template>

@@ -156,7 +156,7 @@ export default defineComponent({
         'onClick': onClear
       } : {
         class: 'cascader__icon __arrow',
-        icon: 'flat-arrow-bottom-small'
+        icon: 'flat-arrow-bottom'
       }
 
       return h(_YuumiIcon, _props)
@@ -205,7 +205,7 @@ export default defineComponent({
                 h('span', { class: 'item__label' }, [getNodeLabel(node)]),
                 node.children && node.children.length ? h(_YuumiIcon, {
                   class: 'item__icon',
-                  icon: 'line-right'
+                  icon: 'line-arrow-right'
                 }) : null
               ])
             }))

@@ -378,7 +378,7 @@ export default defineComponent({
             onChange: onStartSelectDateTimeChange
           })
         ]),
-        h('span', null, [ h(_YuumiIcon, { icon: 'line-right' }) ]),
+        h('span', null, [ h(_YuumiIcon, { icon: 'line-arrow-right' }) ]),
         h('span', { class: 'date-text' }, endSelectDateText || $props.endPlaceholder),
         h('span', { class: 'date-time' }, [
           h(_YuumiTimePicker, _endTimePickerProps)
@@ -433,7 +433,7 @@ export default defineComponent({
           }),
           h(_YuumiIcon, {
             class: 'prev-month',
-            icon: 'line-left',
+            icon: 'line-arrow-left',
             onClick: () => onChangeRenderDate(panels[0].year, panels[0].month - 1)
           })
         ])
@@ -448,7 +448,7 @@ export default defineComponent({
           }),
           h(_YuumiIcon, {
             class: 'next-month',
-            icon: 'line-right',
+            icon: 'line-arrow-right',
             onClick: () => onChangeRenderDate(panels[0].year, panels[0].month + 1)
           })
         ])

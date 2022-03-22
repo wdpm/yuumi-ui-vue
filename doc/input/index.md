@@ -155,20 +155,20 @@ export default {
 <template>
   <YuumiInput style="margin: 0 10px 10px 0;" placeholder="mobile">
     <template #prefixIcon>
-      <YuumiIcon icon="line-mobile" style="color: #aaa;"></YuumiIcon>
+      <YuumiIcon icon="line-mobile" style="color: #aaa;font-size: 16px;"></YuumiIcon>
     </template>
   </YuumiInput>
 
   <YuumiInput style="margin: 0 10px 10px 0;" placeholder="search">
     <template #suffixIcon>
-      <YuumiIcon icon="line-search" style="color: green;"></YuumiIcon>
+      <YuumiIcon icon="line-search" style="color: green;font-size: 16px;"></YuumiIcon>
     </template>
   </YuumiInput>
 
   <YuumiInput style="margin: 0 10px 10px 0; width: 100%;" placeholder="search">
     <template #suffix>
       <YuumiButton style="line-height: 0; margin: -1px -8px; border:none; border-top-left-radius: 0px; border-bottom-left-radius: 0px;" theme="primary">
-         <YuumiIcon icon="line-search"></YuumiIcon>
+         <YuumiIcon icon="line-search" style="font-size: 16px;"></YuumiIcon>
       </YuumiButton>
     </template>
   </YuumiInput>
@@ -184,7 +184,7 @@ export default {
 
     <template #suffix>
       <YuumiButton style="line-height: 0; margin: -1px -8px; border:none; border-top-left-radius: 0px; border-bottom-left-radius: 0px;" theme="primary">
-         <YuumiIcon icon="line-search"></YuumiIcon>
+         <YuumiIcon icon="line-search" style="font-size: 16px;"></YuumiIcon>
       </YuumiButton>
     </template>
   </YuumiInput>

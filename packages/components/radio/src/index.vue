@@ -38,13 +38,13 @@ export default defineComponent({
     checkedIcon: {
       type: Object,
       default: () => ({
-        icon: 'radio-select'
+        icon: 'radio-selected'
       })
     },
     uncheckedIcon: {
       type: Object,
       default: () => ({
-        icon: 'radio-unselect'
+        icon: 'radio-unselected'
       })
     }
   },

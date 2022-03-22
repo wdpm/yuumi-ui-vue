@@ -2,7 +2,7 @@ import './index.scss'
 import { getValueByPath } from '../../../share/helper'
 import { isValidTabsPosition, isValidTabsType } from '../../../share/validator'
 import { getTabItemsFromSlot } from './helper'
-import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref, resolveComponent, Transition, TransitionGroup } from 'vue'
+import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref, resolveComponent, TransitionGroup, watch } from 'vue'
 import { YuumiTabItem } from '../'
 import useStyle from './style-helper'
 import type { Ref, VNode } from 'vue'
@@ -43,11 +43,16 @@ export default defineComponent({
 
       emit('update:modelValue', value)
       emit('change', value)
-      nextTick(() => {
-        updateRectPosition()
-        updateNavsPosition(0)
-      })
     }
+
+    watch(() => props.modelValue, (value, oldValue) => {
+      if (value !== oldValue) {
+        nextTick(() => {
+          updateRectPosition()
+          updateNavsPosition(0)
+        })
+      }
+    })
 
     return {
       tabsElement,
@@ -115,7 +120,7 @@ export default defineComponent({
       return h('div', { class: 'tabs__header', ref: 'tabsElement' }, [
         hasScrollbar && h(_iconComponent, {
           class: 'navs__prev',
-          icon: _isVertical ? 'line-left': 'line-top',
+          icon: _isVertical ? 'line-arrow-left': 'line-arrow-top',
           onClick: () => updateNavsPosition(-1)
         }),
 
@@ -123,7 +128,7 @@ export default defineComponent({
 
         hasScrollbar && h(_iconComponent, {
           class: 'navs__next',
-          icon: _isVertical ? 'line-right' : 'line-bottom',
+          icon: _isVertical ? 'line-arrow-right' : 'line-arrow-bottom',
           onClick: () => updateNavsPosition(1)
         })
       ])

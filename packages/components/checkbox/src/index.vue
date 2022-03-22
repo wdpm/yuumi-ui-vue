@@ -31,8 +31,8 @@ export default defineComponent({
     disabled: Boolean,
     unique: { type: [String, Number, Boolean], required: true },
     size: { type: String, validator: isValidComponentSize, default: 'md' },
-    checkedIcon: { type: Object, default: () => ({ icon: 'line-checkbox-select' })},
-    uncheckedIcon: {type: Object, default: () => ({ icon: 'checkbox-unselect' })},
+    checkedIcon: { type: Object, default: () => ({ icon: 'checkbox-selected' })},
+    uncheckedIcon: {type: Object, default: () => ({ icon: 'checkbox-unselected' })},
     indeterminate: Boolean,
     indeterminateIcon: { type: Object, default: () => ({ icon: 'line-checkbox-indeterminate' })}
   },
