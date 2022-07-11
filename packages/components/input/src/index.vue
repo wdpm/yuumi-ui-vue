@@ -3,6 +3,7 @@
   {
     '__disabled': disabled,
     '__readonly': readonly,
+    '__round': round,
     '__has-prefix-icon': hasPrefixIcon,
     '__has-suffix-icon': hasSuffixIcon || clearIconVisible,
     '__has-prefix': hasPrefix,
@@ -23,7 +24,7 @@
       <slot name="prefixIcon"></slot>
     </span>
 
-    <input ref="inputEl" type="text" :value="modelValue" @input="onInput"
+    <input ref="inputEl" :type="type" :value="modelValue" @input="onInput"
       :disabled="disabled"
       :readonly="readonly"
       :maxlength="maxlength"
@@ -46,7 +47,7 @@
 
 <script lang="ts">
 import type { Ref } from 'vue'
-import { isDefined, isValidComponentSize, isValidComponentTheme } from '../../../share/validator'
+import { isDefined, isValidComponentSize, isInputType, isValidComponentTheme } from '../../../share/validator'
 import { defineComponent, onMounted, ref, watch, nextTick } from 'vue'
 
 export default defineComponent({
@@ -69,7 +70,13 @@ export default defineComponent({
       default: 'default'
     },
     limit: [Function, RegExp],
-    clearable: Boolean
+    clearable: Boolean,
+    round: Boolean,
+    type: {
+      type: String,
+      validator: isInputType,
+      default: 'text'
+    }
   },
   setup (props, { emit, slots }) {
     // 是否有插槽
@@ -241,7 +248,6 @@ export default defineComponent({
   }
 
   .input__prefix-icon, .input__suffix-icon {
-    width: map-get($--space, "lg");
     text-align: center;
     position: absolute;
     top: 50%;
@@ -301,6 +307,10 @@ export default defineComponent({
     &.size__#{$key} {
       height: $value;
 
+      .input__prefix-icon, .input__suffix-icon  {
+        width: $value;
+      }
+
       input {
         height: $value;
         padding: 0 $value*0.25;
@@ -312,6 +322,10 @@ export default defineComponent({
 
       &.__has-suffix-icon input {
         padding-right: $value;
+      }
+
+      &.__round input {
+        border-radius: $value;
       }
     }
   }
