@@ -1,6 +1,6 @@
 import './index.scss';
 import { h, createVNode, resolveComponent, Transition, Teleport } from 'vue'
-import { getPluginApp } from '..';
+import { getPluginAppComponentInstance } from '..';
 import { isValidNotificationDirection, isValidNotificationTheme } from '../../share/validator';
 import type { VNode } from 'vue'
 
@@ -88,7 +88,7 @@ function getPartialNotification (options: CreateNotificationOptions) {
           name: 'yuumi-notification',
           appear: true,
           onAfterLeave: () => {
-            const { notifications } = (getPluginApp()._instance?.proxy) || {} as any
+            const { notifications } = (getPluginAppComponentInstance()?.proxy) || {} as any
             const index = notifications.findIndex((item: VNode) => item === vnode)
             if (index > -1) { notifications.splice(index, 1) }
             vnode = null as any
@@ -136,7 +136,9 @@ function getPartialNotification (options: CreateNotificationOptions) {
 }
 
 function updateNotificationY (vnode: VNode) {
-  const { notifications } = (getPluginApp()._instance?.proxy) || {} as any
+  if (!vnode) return
+
+  const { notifications } = (getPluginAppComponentInstance()?.proxy) || {} as any
   if (!notifications) return
 
   const _direction = vnode.component?.props?.direction
@@ -162,7 +164,7 @@ function updateNotificationY (vnode: VNode) {
 
 export const createNotification = function (options: CreateNotificationOptions) {
   const vnode = getPartialNotification(options)
-  const { notifications } = (getPluginApp()._instance?.proxy) || {} as any
+  const { notifications } = (getPluginAppComponentInstance()?.proxy) || {} as any
 
   if (notifications) { notifications.push(vnode) }
 
@@ -176,7 +178,7 @@ export const removeNotification = function (vnode: VNode) {
 }
 
 export const removeAllNotification = function () {
-  const { notifications } = (getPluginApp()._instance?.proxy) || {} as any
+  const { notifications } = (getPluginAppComponentInstance()?.proxy) || {} as any
   if (notifications) {
     notifications.forEach((item: VNode) => removeNotification(item))
   }

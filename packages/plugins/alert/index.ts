@@ -1,6 +1,6 @@
 import './index.scss';
 import { createVNode, h, mergeProps, resolveComponent } from 'vue'
-import { getPluginApp } from '..'
+import { getPluginAppComponentInstance } from '..'
 import type { VNode } from 'vue'
 
 export interface CreateAlertOptions {
@@ -34,7 +34,7 @@ function getPartialAlert (options: CreateAlertOptions) {
           this.show = value
         },
         'onAfterLeave': () => {
-          const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
+          const { alerts } = (getPluginAppComponentInstance()?.proxy) || {} as any
           const index = alerts.findIndex((item: any) => item === vnode)
           if (index > -1) { alerts.splice(index, 1)}
           vnode = null
@@ -55,7 +55,7 @@ function getPartialAlert (options: CreateAlertOptions) {
 
 export const createAlert = function (options: CreateAlertOptions) {
   const vnode = getPartialAlert(options)
-  const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
+  const { alerts } = (getPluginAppComponentInstance()?.proxy) || {} as any
 
   if (alerts) {
     alerts.push(vnode)
@@ -71,7 +71,7 @@ export const removeAlert = function (vnode: VNode) {
 }
 
 export const removeAllAlert = function () {
-  const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
+  const { alerts } = (getPluginAppComponentInstance()?.proxy) || {} as any
   if (alerts) {
     alerts.forEach((item: VNode) => removeAlert(item))
   }

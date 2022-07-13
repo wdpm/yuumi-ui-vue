@@ -1,7 +1,7 @@
 import './index.scss';
 import { createRange } from '../../share/helper';
 import { createVNode, h, isVNode, mergeProps, resolveComponent, Teleport, Transition } from 'vue'
-import { getPluginApp } from '..'
+import { getPluginAppComponentInstance } from '..'
 import type { VNode } from 'vue'
 
 export interface CreateLoadingOptions {
@@ -78,7 +78,7 @@ export const getLoadingId = function () {
 }
 
 export const getLoadings = () => {
-  const { loadings } = (getPluginApp()._instance?.proxy) || {} as any
+  const { loadings } = (getPluginAppComponentInstance()?.proxy) || {} as any
   return loadings
 }
 
