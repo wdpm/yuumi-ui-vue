@@ -60,6 +60,15 @@ export * from './plugins/message'
 export * from './plugins/notification'
 export * from './plugins/loading'
 
+export function useYuumiUI (): YuumiExtension {
+  return {
+    createAlert, removeAlert, removeAllAlert,
+    createMessage, removeMessage, removeAllMessage,
+    createNotification, removeNotification, removeAllNotification,
+    createLoading, removeLoading, removeAllLoading
+  }
+}
+
 export default {
   install: (app: App): void => {
     app.use(ButtonPlug)
@@ -87,12 +96,7 @@ export default {
     app.use(TreePlug)
     app.use(WarningPlug)
 
-    app.config.globalProperties.$yuumi = {
-      createAlert, removeAlert, removeAllAlert,
-      createMessage, removeMessage, removeAllMessage,
-      createNotification, removeNotification, removeAllNotification,
-      createLoading, removeLoading, removeAllLoading
-    }
+    app.config.globalProperties.$yuumi = useYuumiUI()
 
     app.use(LoadingPlug)
   }
