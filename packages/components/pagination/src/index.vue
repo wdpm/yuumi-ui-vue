@@ -1,7 +1,7 @@
 <template>
-<div class="yuumi-pagination">
+<div class="yuumi-pagination" :class="['_'+align]">
   <template v-for="item in buttons" :key="item.text">
-    <YuumiButton v-if="item.type === 'btn'" size="sm" outline :theme="item.selected ? 'primary' : '' "
+    <YuumiButton v-if="item.type === 'btn'" size="sm" outline :theme="item.selected ? 'primary' : 'default' "
       :disabled="item.disabled"
       @click="onClick(item)"
     >{{item.text}}</YuumiButton>
@@ -21,25 +21,29 @@ import { computed, defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'YuumiPagination',
   props: {
-    page: { type: Number, default: 1 },
-    pageTotal: { type: Number },
-    total: { type: Number },
+    page: { type: [Number, String], default: 1, validator: (value: any) => Number(value) >= 0 },
+    pageTotal: { type: [Number, String], validator: (value: any) => Number(value) >= 0 },
+    total: { type: [Number, String], validator: (value: any) => Number(value) >= 0},
     totalVisible: { type: Boolean, default: true },
     maxLength: { type: Number, default: 5, validator: (value: number) => {
       return value % 2 === 1 && value >= 3
-    }}
+    }},
+    align: { type: String, default: 'center', validator: (value: string) => /left|center|right/.test(value)},
   },
   emits: ['change'],
   setup (props, { emit }) {
+    const page = computed(() => Number(props.page))
+    const pageTotal = computed(() => Number(props.pageTotal || props.page || 0))
+
     const buttons = computed(() => {
       const half = Math.floor(props.maxLength / 2)
-      const left = Math.max(1, props.page - half)
-      const right = Math.min(Math.max(props.page + half, props.maxLength), props.pageTotal || props.page)
+      const left = Math.max(1, page.value - half)
+      const right = Math.min(Math.max(page.value + half, props.maxLength), pageTotal.value)
       const btns = createRange(left, right + 1, (item) => ({
         type: 'btn',
         text: item,
         value: item,
-        selected: item === props.page
+        selected: item === page.value
       }))
 
       if (left > 2) {
@@ -52,22 +56,22 @@ export default defineComponent({
       btns.unshift({
         type: 'btn',
         text: '上一页',
-        value: props.page - 1,
-        disabled: props.page <= 1
+        value: page.value - 1,
+        disabled: page.value <= 1
       })
 
-      if (right + 2 < (props.pageTotal || props.page)) {
+      if (right + 2 < pageTotal.value) {
         btns.push(
           { type: 'text', text: '...' },
-          { type: 'btn', text: props.pageTotal || props.page, value: props.pageTotal || props.page },
+          { type: 'btn', text: pageTotal.value, value: pageTotal },
         )
       }
 
       btns.push({
         type: 'btn',
         text: '下一页',
-        value: props.page + 1,
-        disabled: props.page >= (props.pageTotal || props.page)
+        value: page.value + 1,
+        disabled: page.value >= pageTotal.value
       })
 
       return btns
@@ -76,8 +80,8 @@ export default defineComponent({
     const skipValue = ref("")
 
     function skipValueLimit (vlaue: number) {
-      const page = Number(vlaue)
-      if (!page || page <= 0 || page > (props.pageTotal || props.page)) return false
+      const _v = Number(vlaue)
+      if (!_v || _v <= 0 || _v > pageTotal.value) return false
       return true
     }
 
@@ -110,6 +114,18 @@ export default defineComponent({
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
+
+  &._left {
+    justify-content: flex-start;
+  }
+
+  &._center {
+    justify-content: center;
+  }
+
+  &._right {
+    justify-content: flex-end;
+  }
 
   .yuumi-button, .yuumi-input {
     margin: 0 map-get($--space, "xm")*0.5;
