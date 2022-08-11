@@ -1,11 +1,11 @@
 import type { App } from 'vue'
-import Tree from './src/index'
+import Menu from './src/index'
 import './src/index.scss'
 
 export default {
   install: (app: App): void => {
-    app.component(Tree.name, Tree)
+    app.component(Menu.name, Menu)
   }
 }
 
-export const YuumiTree = Tree
+export const YuumiMenu = Menu

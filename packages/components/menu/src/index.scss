@@ -1,0 +1,56 @@
+@import "../../../theme.scss";
+
+.yuumi-menu {
+  .menu-node {
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .menu-node .node-content {
+    display: flex;
+    align-items: center;
+    transition: background 0.3s;
+    padding: map-get($--space, "xm");
+
+    > :not(:first-child) {
+      margin-left: 0.5em;
+    }
+
+    .expand-icon {
+      transition: transform 0.2s;
+      transform: rotate(-90deg);
+
+      &.__active {
+        transform: rotate(0deg);
+      }
+    }
+
+    .content__label {
+      flex: 1 1 auto;
+      padding-right: map-get($--space, "xm");
+    }
+
+    &.__selected {
+      .prefix-icon, .content__label {
+        color: map-get($--color, "primary");
+      }
+    }
+
+    &:hover {
+      background-color: rgba(map-get($--color, "primary"), 0.1);
+    }
+  }
+}
+
+.node-children-enter-active, .node-children-leave-active {
+  transition: height .2s;
+}
+.node-children-enter-from, .node-children-leave-to {
+  height: 0;
+}
+
+@keyframes nodeChildrenLoading {
+  100% {
+    transform: rotate(1turn);
+  }
+}

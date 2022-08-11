@@ -109,5 +109,9 @@ export default [{
     name: 'Tree',
     label: '树形组件',
     path: '/doc/tree'
+  }, {
+    name: 'Menu',
+    label: '侧边栏菜单组件',
+    path: '/doc/menu'
   }]
 }]

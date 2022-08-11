@@ -7,7 +7,7 @@ import type { Ref } from 'vue'
 export default defineComponent({
   name: 'YuumiTableColumn',
   props: {
-    width: { type: Number, default: 75 },
+    width: { type: Number, default: 100 },
     title: { type: String },
     prop: { type: String },
     placeholder: { type: String, default: '-' },

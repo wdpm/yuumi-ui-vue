@@ -73,6 +73,9 @@ const docChildren: RouteRecordRaw[] = [{
   path: 'tree',
   component: () => import('../../doc/tree/index.md')
 }, {
+  path: 'menus',
+  component: () => import('../../doc/menus/index.md')
+}, {
   path: 'install',
   component: () => import('../../doc/install.md')
 }, {

@@ -5,18 +5,17 @@ import type { ProvideState } from './provider-helper'
 export default defineComponent({
   name: 'TableBody',
   props: {
+    data: Array,
     onScroll: Function
   },
   setup () {
     const { tableInstance, columns, columnStickyPositions, scrollbarState, staticWidth } = inject('state') as ProvideState
-    const { data, rowClassName,  cellClassName } = tableInstance.props as {
-      data: any[]
+    const { rowClassName,  cellClassName } = tableInstance.props as {
       rowClassName: Function
       cellClassName: Function
     }
 
     return {
-      data,
       rowClassName,
       cellClassName,
       columns,

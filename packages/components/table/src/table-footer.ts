@@ -37,11 +37,15 @@ function defaultSummaryMethod ({ data, columns, summaryText }: SummaryMethodOpti
 
 export default defineComponent({
   name: 'TableFooter',
-  setup () {
+  props: {
+    data: { type: Array }
+  },
+  setup (props) {
     const { tableInstance, columns, columnStickyPositions, rect, staticWidth, scrollbarState, scrollbarSize } = inject('state') as ProvideState
-    const { summaryMethod, summaryText, data } = tableInstance.props as any
+    const { summaryMethod, summaryText } = tableInstance.props as any
     const sum = computed(() => {
-      return summaryMethod ? summaryMethod({ data, columns: columns.value, summaryText }) : defaultSummaryMethod({ data, columns: columns.value, summaryText })
+      const params = { data: props.data as any, columns: columns.value, summaryText }
+      return summaryMethod ? summaryMethod(params) : defaultSummaryMethod(params)
     })
 
     return {

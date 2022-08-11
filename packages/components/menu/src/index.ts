@@ -1,30 +1,29 @@
 import { defineComponent, h, provide, ref } from 'vue'
-import type { Ref, VNode } from 'vue'
-import TreeNode, { injectKey } from './node'
+import type { Ref } from 'vue'
+import MenuNode, { injectKey } from './node'
 
 export default defineComponent({
-  name: 'YuumiTree',
+  name: 'YuumiMenu',
   props: {
     data: { type: Array },
     optionKey: { type: Object },
-    expandIcon: { type: Object, default: () => ({ icon: 'flat-arrow-bottom' })},
+    expandIcon: { type: Object, default: () => ({ icon: 'line-arrow-bottom' })},
     expandIconVisible: { type: Boolean, default: true },
-    checkable: { type: Boolean, default: true },
-    loadData: { type: Function }
+    selectedNode: { type: Object }
   },
   components: {
-    TreeNode
+    MenuNode
   },
-  emits: ['checked', 'node-expand', 'node-click'],
+  emits: ['node-expand', 'node-click', 'node-mouseenter', 'node-mouseleave'],
   setup (props, { emit, expose }) {
     const childrenComponent: Ref<any[]> = ref([])
 
     const exposeRecord = {
-      getTreeData,
+      getMenuData,
       getCheckedNodes
     }
 
-    function getTreeData () {
+    function getMenuData () {
       return childrenComponent.value.map((item) => item.getNodeData())
     }
 
@@ -50,9 +49,10 @@ export default defineComponent({
   render () {
     const { $slots, data } = this
 
-    return h('div', { class: 'yuumi-tree' }, (data || []).map((item, index) => {
-      return h(TreeNode as any, {
+    return h('div', { class: 'yuumi-menu' }, (data || []).map((item, index) => {
+      return h(MenuNode as any, {
         node: item,
+        depth: 0,
         ref: (el: any) => this.childrenComponent[index] = el,
       }, {
         default: $slots.default

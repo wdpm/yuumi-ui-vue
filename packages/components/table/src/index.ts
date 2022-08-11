@@ -1,5 +1,5 @@
 import { isValidTableSize } from '../../../share/validator'
-import { defineComponent, getCurrentInstance, h, onMounted, onUnmounted, ref } from 'vue'
+import { defineComponent, getCurrentInstance, h, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import type { ComponentInternalInstance } from 'vue'
 import useProvider from './provider-helper'
 import TalbeHeader from './table-header'
@@ -31,6 +31,11 @@ export default defineComponent({
     summaryMethod: Function
   },
   emits: ['select', 'selectAll', 'selectionChange', 'scroll'],
+  watch: {
+    data: function () {
+      this.onResize()
+    }
+  },
   setup (props, { emit, expose }) {
     const instance = getCurrentInstance() as ComponentInternalInstance
     const { columns, rect, updateRect, scrollbarState, updateScrollbarPositionState, selections, toggleRowsSelection, clearSelection } = useProvider(instance)
@@ -87,11 +92,12 @@ export default defineComponent({
       columns,
       rect,
       scrollbarState,
-      onScroll
+      onScroll,
+      onResize
     }
   },
   render () {
-    const { scrollbarState, rect } = this
+    const { scrollbarState, rect, data } = this
     const { positionIsStart, positionIsEnd, hasX, hasY } = scrollbarState
 
     return h('div', {
@@ -105,13 +111,14 @@ export default defineComponent({
     }, [
       h(TalbeHeader, { ref: 'tableHeaderComponent' }),
       h(TableBody, {
+        data,
         style: {
           height: hasY.value ? `${rect.table.height - rect.header.height - rect.footer.height}px` : null,
         },
         onScroll: this.onScroll,
         ref: 'tableBodyComponent'
       }),
-      this.summary && h(TableFooter, { ref: 'tableFooterComponent' })
+      this.summary && h(TableFooter, { data, ref: 'tableFooterComponent' })
     ])
   }
 })
