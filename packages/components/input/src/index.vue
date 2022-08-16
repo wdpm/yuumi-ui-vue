@@ -24,7 +24,7 @@
       <slot name="prefixIcon"></slot>
     </span>
 
-    <input ref="inputEl" :type="type" :value="modelValue" @input="onInput"
+    <input ref="inputEl" :type="type" :value="modelValue" @input="onInput" v-bind="inputListeners"
       :disabled="disabled"
       :readonly="readonly"
       :maxlength="maxlength"
@@ -48,7 +48,7 @@
 <script lang="ts">
 import type { Ref } from 'vue'
 import { isDefined, isValidComponentSize, isInputType, isValidComponentTheme } from '../../../share/validator'
-import { defineComponent, onMounted, ref, watch, nextTick } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch, nextTick } from 'vue'
 
 export default defineComponent({
   name: 'YuumiInput',
@@ -78,7 +78,7 @@ export default defineComponent({
       default: 'text'
     }
   },
-  setup (props, { emit, slots }) {
+  setup (props, { emit, slots, attrs }) {
     // 是否有插槽
     const hasPrefixIcon: Ref<boolean> = ref(isDefined(slots.prefixIcon))
     const hasSuffixIcon: Ref<boolean> = ref(isDefined(slots.suffixIcon))
@@ -112,6 +112,7 @@ export default defineComponent({
 
       if (!compositionupdating.value) {
         emit('update:modelValue', target.value)
+        emit('input', e)
       }
     }
 
@@ -178,6 +179,18 @@ export default defineComponent({
       }
     }, { immediate: true })
 
+    attrs = (attrs || {})
+    const inputListeners = computed(() => {
+      return {
+        onBlur: attrs.onBlur,
+        onFocus: attrs.onFocus,
+        onChange: attrs.onChange,
+        onKeydown: attrs.onKeydown,
+        onKeyup: attrs.onKeyup,
+        onKeypress: attrs.onKeypress
+      }
+    })
+
     return {
       hasPrefixIcon,
       hasSuffixIcon,
@@ -191,7 +204,8 @@ export default defineComponent({
       isMouseenter,
       onMouseenter,
       onMouseleave,
-      clearValue
+      clearValue,
+      inputListeners
     }
   }
 })
