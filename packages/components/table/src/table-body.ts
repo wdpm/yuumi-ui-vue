@@ -10,13 +10,15 @@ export default defineComponent({
   },
   setup () {
     const { tableInstance, columns, columnStickyPositions, scrollbarState, staticWidth } = inject('state') as ProvideState
-    const { rowClassName,  cellClassName } = tableInstance.props as {
+    const { rowClassName,  cellClassName, rowKeyPath } = tableInstance.props as {
       rowClassName: Function
-      cellClassName: Function
+      cellClassName: Function,
+      rowKeyPath: string
     }
 
     return {
       rowClassName,
+      rowKeyPath,
       cellClassName,
       columns,
       columnStickyPositions,
@@ -25,8 +27,8 @@ export default defineComponent({
     }
   },
   render () {
-    const { data, rowClassName, cellClassName, columns, columnStickyPositions, scrollbarState, staticWidth } = this
-    const { hasX } = scrollbarState
+    const { data, rowClassName, rowKeyPath, cellClassName, columns, columnStickyPositions, scrollbarState, staticWidth } = this
+    const { hasX, hasY } = scrollbarState
 
     return h('div', {
       class: ['table--body'],
@@ -35,16 +37,20 @@ export default defineComponent({
     }, [
       h('table', { cellspacing: 0, cellpadding: 0, border: 0, style: {
         minWidth: `${staticWidth}px`,
-        tableLayout: hasX.value ? 'fixed' : 'auto'
+        tableLayout: hasX.value || hasY.value ? 'fixed' : 'auto'
       } }, [
         h('colgroup', {}, columns.map(column => {
           const props = column.props || {}
           const typeProps = getValueByPath(column, 'type.props', {})
 
-          return h('col', { width:  props.width || typeProps.width.default })
+          return h('col', {
+            key: props.key,
+            width:  props.width || typeProps.width.default
+          })
         })),
         h('tbody', {}, (data || []).map((row, rowIndex) => {
           return h('tr', {
+            key: getValueByPath(row, rowKeyPath, rowIndex),
             class: [rowClassName && rowClassName({ row, index: rowIndex })]
           }, columns.map((column, index) => {
             const stickyPosition = columnStickyPositions[index] as any

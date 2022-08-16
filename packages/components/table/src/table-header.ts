@@ -126,7 +126,7 @@ export default defineComponent({
       ref: 'tableHeader'
     }, [
       h('table', { cellspacing: 0, cellpadding: 0, border: 0, style: {
-        tableLayout: hasY.value ? 'fixed' : 'auto',
+        tableLayout: hasX.value || hasY.value ? 'fixed' : 'auto',
         minWidth: `${staticWidth}px`
       } }, [
         getColgroup(),

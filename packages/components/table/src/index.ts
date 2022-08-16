@@ -28,12 +28,18 @@ export default defineComponent({
       type: String,
       default: '合计'
     },
-    summaryMethod: Function
+    summaryMethod: Function,
+    rowKeyPath: { type: String, default: "id" },
+    resetScroll: { type: Boolean }
   },
   emits: ['select', 'selectAll', 'selectionChange', 'scroll'],
   watch: {
     data: function () {
       this.onResize()
+      if (this.resetScroll && this.tableBodyComponent) {
+        this.tableBodyComponent.$refs.tableBody.scrollTop = 0
+        this.tableBodyComponent.$refs.tableBody.scrollLeft = 0
+      }
     }
   },
   setup (props, { emit, expose }) {
