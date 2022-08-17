@@ -63,7 +63,7 @@ export default defineComponent({
       if (right + 2 < pageTotal.value) {
         btns.push(
           { type: 'text', text: '...' },
-          { type: 'btn', text: pageTotal.value, value: pageTotal },
+          { type: 'btn', text: pageTotal.value, value: pageTotal.value },
         )
       }
 

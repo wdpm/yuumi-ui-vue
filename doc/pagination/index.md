@@ -31,9 +31,9 @@ export default {
         total: 200
       },
       page3: {
-        page: "10",
-        pageTotal: "20",
-        total: 200
+        page: "18",
+        pageTotal: "145",
+        total: "2885"
       }
     }
   },
