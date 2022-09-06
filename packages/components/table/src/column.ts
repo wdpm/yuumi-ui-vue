@@ -22,8 +22,8 @@ export default defineComponent({
     }
   },
   setup (props, { attrs }) {
-    const { tableInstance, selections, selectionChanged } = inject('state') as ProvideState
-    const { data } = tableInstance.props as any
+    const { rootProps, selections, selectionChanged } = inject('state') as ProvideState
+    const { data } = rootProps.value
 
     const checked: Ref<boolean> = ref(selections.value.some(item => item === data[attrs.rowIndex as number]))
 
@@ -37,13 +37,14 @@ export default defineComponent({
     })
 
     return {
-      data,
+      rootProps,
       checked,
       selectionChanged
     }
   },
   render () {
-    const { align, type, data, $attrs } = this
+    const { rootProps, align, type, $attrs } = this
+    const { data } = rootProps
 
     const getColumnContent = () => {
       if (type === tableColumnType.selection) {

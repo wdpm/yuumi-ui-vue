@@ -5,21 +5,13 @@ import type { ProvideState } from './provider-helper'
 export default defineComponent({
   name: 'TableBody',
   props: {
-    data: Array,
     onScroll: Function
   },
   setup () {
-    const { tableInstance, columns, columnStickyPositions, scrollbarState, staticWidth } = inject('state') as ProvideState
-    const { rowClassName,  cellClassName, rowKeyPath } = tableInstance.props as {
-      rowClassName: Function
-      cellClassName: Function,
-      rowKeyPath: string
-    }
+    const { rootProps, columns, columnStickyPositions, scrollbarState, staticWidth } = inject('state') as ProvideState
 
     return {
-      rowClassName,
-      rowKeyPath,
-      cellClassName,
+      rootProps,
       columns,
       columnStickyPositions,
       scrollbarState,
@@ -27,7 +19,8 @@ export default defineComponent({
     }
   },
   render () {
-    const { data, rowClassName, rowKeyPath, cellClassName, columns, columnStickyPositions, scrollbarState, staticWidth } = this
+    const { rootProps, columns, columnStickyPositions, scrollbarState, staticWidth } = this
+    const { data, rowClassName, cellClassName } = rootProps
     const { hasX, hasY } = scrollbarState
 
     return h('div', {
@@ -48,9 +41,8 @@ export default defineComponent({
             width:  props.width || typeProps.width.default
           })
         })),
-        h('tbody', {}, (data || []).map((row, rowIndex) => {
+        h('tbody', {}, (data || []).map((row: any, rowIndex: number) => {
           return h('tr', {
-            key: getValueByPath(row, rowKeyPath, rowIndex),
             class: [rowClassName && rowClassName({ row, index: rowIndex })]
           }, columns.map((column, index) => {
             const stickyPosition = columnStickyPositions[index] as any

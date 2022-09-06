@@ -29,7 +29,6 @@ export default defineComponent({
       default: '合计'
     },
     summaryMethod: Function,
-    rowKeyPath: { type: String, default: "id" },
     resetScroll: { type: Boolean }
   },
   emits: ['select', 'selectAll', 'selectionChange', 'scroll'],
@@ -117,14 +116,13 @@ export default defineComponent({
     }, [
       h(TalbeHeader, { ref: 'tableHeaderComponent' }),
       h(TableBody, {
-        data,
         style: {
           height: hasY.value ? `${rect.table.height - rect.header.height - rect.footer.height}px` : null,
         },
         onScroll: this.onScroll,
         ref: 'tableBodyComponent'
       }),
-      this.summary && h(TableFooter, { data, ref: 'tableFooterComponent' })
+      this.summary && h(TableFooter, { ref: 'tableFooterComponent' })
     ])
   }
 })

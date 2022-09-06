@@ -14,7 +14,7 @@ function useProvider (tableInstance: ComponentInternalInstance | null): UseProvi
   const { selections, selectionValue, selectionChanged, toggleRowsSelection, clearSelection } = useSelection(tableInstance)
 
   const state: ProvideState = {
-    tableInstance,
+    rootProps: computed(() => tableInstance.props),
     columns,
     columnStickyPositions: computed(() => getColumnStickyPositions(columns.value)),
     staticWidth: computed(() => columns.value.reduce((acc, item) => {
@@ -42,7 +42,7 @@ function useProvider (tableInstance: ComponentInternalInstance | null): UseProvi
 export default useProvider
 
 export interface ProvideState {
-  tableInstance: ComponentInternalInstance
+  rootProps: ComputedRef<any>
   columns: ComputedRef<VNode[]>
   columnStickyPositions: ComputedRef<(SticyPosition|null)[]>
   staticWidth: ComputedRef<number>
