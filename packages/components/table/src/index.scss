@@ -146,7 +146,7 @@
     }
   }
 
-  .table--header, .table--footer {
+  .table--head, .table--foot {
     width: 100%;
     overflow: hidden;
 
@@ -156,8 +156,6 @@
   }
 
   .table--body {
-    // width: 100%;
-    // height: 100%;
     overflow: auto;
   }
 }

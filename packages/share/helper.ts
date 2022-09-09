@@ -189,3 +189,50 @@ export function createRange (start: number, end: number, cb?: (item: number) => 
 
   return range
 }
+
+export function debounce(fn: Function, duration: number, ctx?: Function) {
+  let timeout: any
+
+  return function (this: any) {
+    if (timeout) clearTimeout(timeout)
+
+    timeout = setTimeout(() => {
+      fn.apply(ctx || this, arguments)
+    }, duration)
+  }
+}
+
+export function equal(target: any, origin: any): boolean {
+  if (target === origin) return true
+
+  const targetType = Object.prototype.toString.call(target).slice(8, -1).toLowerCase()
+  const originType = Object.prototype.toString.call(origin).slice(8, -1).toLowerCase()
+  if (targetType !== originType) return false
+
+  const commonType = targetType
+  if (commonType === 'array') {
+    let index = target.length
+    if (index !== origin.length) return false
+
+    while(index--) {
+      if (!equal(target[index], origin[index])) return false
+    }
+
+    return true
+  } else if (commonType === 'object') {
+    const keys: {[x:string]: number} = {}
+
+    for (let key in target) {
+      if (!equal(target[key], origin[key])) return false
+      keys[key] = 1
+    }
+
+    for (let key in origin) {
+      if (keys[key] === undefined) return false
+    }
+
+    return true
+  } else {
+    return target.toString() === origin.toString()
+  }
+}

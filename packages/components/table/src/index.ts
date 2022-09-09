@@ -1,10 +1,11 @@
 import { isValidTableSize } from '../../../share/validator'
-import { defineComponent, getCurrentInstance, h, onMounted, onUnmounted, ref, watchEffect } from 'vue'
-import type { ComponentInternalInstance } from 'vue'
-import useProvider from './provider-helper'
-import TalbeHeader from './table-header'
+import { debounce } from '../../../share/helper'
+import { ComponentInternalInstance, defineComponent, getCurrentInstance, h, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useProvide } from './provide-helper'
+import { updateTableCellSize, updateTableWidth, updateTableWrapperSize } from './size-helper'
+import TableHead from './table-head'
 import TableBody from './table-body'
-import TableFooter from './table-footer'
+import TableFoot from './table-foot'
 import './index.scss'
 
 export default defineComponent({
@@ -12,7 +13,8 @@ export default defineComponent({
   props: {
     data: {
       type: Array,
-      required: true
+      required: true,
+      default: () => []
     },
     border: Boolean,
     stripe: Boolean,
@@ -31,51 +33,32 @@ export default defineComponent({
     summaryMethod: Function,
     resetScroll: { type: Boolean }
   },
-  emits: ['select', 'selectAll', 'selectionChange', 'scroll'],
-  watch: {
-    data: function () {
-      this.onResize()
-      if (this.resetScroll && this.tableBodyComponent) {
-        this.tableBodyComponent.$refs.tableBody.scrollTop = 0
-        this.tableBodyComponent.$refs.tableBody.scrollLeft = 0
-      }
-    }
-  },
+  emits: ['select', 'selectAll', 'selectionChange','scroll'],
   setup (props, { emit, expose }) {
     const instance = getCurrentInstance() as ComponentInternalInstance
-    const { columns, rect, updateRect, scrollbarState, updateScrollbarPositionState, selections, toggleRowsSelection, clearSelection } = useProvider(instance)
-    const tableElement = ref()
-    const tableHeaderComponent = ref()
+    const { getters, scrollbar, selection } = useProvide(instance)
+    const { columns } = getters
+
+    const tableWrapper = ref()
+    const tableHeadComponent = ref()
     const tableBodyComponent = ref()
-    const tableFooterComponent = ref()
-
-    function onResize () {
-      updateRect({
-        table: tableElement.value,
-        header: tableHeaderComponent.value?.$refs.tableHeader,
-        body: tableBodyComponent.value?.$refs.tableBody,
-        footer: tableFooterComponent.value?.$refs.tableFooter
-      })
-
-      updateScrollbarPositionState(tableBodyComponent.value.$refs.tableBody)
-    }
+    const tableFootComponent = ref()
 
     function onScroll (e: Event) {
       const target = e.target as HTMLElement
+      scrollbar.updateScrollPositon(target)
 
-      updateScrollbarPositionState(target)
-
-      tableHeaderComponent.value.$refs.tableHeader.scrollLeft = target.scrollLeft
-      if (tableFooterComponent.value) {
-        tableFooterComponent.value.$refs.tableFooter.scrollLeft = target.scrollLeft
+      tableHeadComponent.value.$el.scrollLeft = target.scrollLeft
+      if (tableFootComponent.value) {
+        tableFootComponent.value.$el.scrollLeft = target.scrollLeft
       }
 
       emit('scroll', e)
     }
 
-    onMounted(() => {
-      onResize()
+    const onResize = debounce(updateSizes, 16)
 
+    onMounted(() => {
       window.addEventListener('resize', onResize, false)
     })
 
@@ -83,46 +66,60 @@ export default defineComponent({
       window.removeEventListener('resize', onResize, false)
     })
 
+    function updateSizes () {
+      updateTableCellSize(tableBodyComponent.value, tableHeadComponent.value, tableFootComponent.value)
+      updateTableWidth(tableBodyComponent.value, tableHeadComponent.value, tableFootComponent.value)
+      updateTableWrapperSize(tableWrapper.value, tableBodyComponent.value, tableHeadComponent.value, tableFootComponent.value)
+      scrollbar.update(tableBodyComponent.value)
+      scrollbar.updateScrollPositon(tableBodyComponent.value.$el)
+
+      // 如果有垂直方向的滚动条
+      if (scrollbar.hasY.value) {
+        updateTableWidth(tableBodyComponent.value, tableHeadComponent.value, tableFootComponent.value, scrollbar.width.value)
+      }
+    }
+
+    watch(() => props.data, () => {
+      nextTick(updateSizes)
+    }, { immediate: true })
+
+    watch(() => columns.value, () => {
+      nextTick(updateSizes)
+    })
+
     expose({
-      selections,
-      toggleRowsSelection,
-      clearSelection
+      selections: selection.selections,
+      toggleRowsSelection: selection.toggleRowsSelection,
+      clearSelection: selection.clearSelection
     })
 
     return {
-      tableElement,
-      tableHeaderComponent,
+      tableWrapper,
+      tableHeadComponent,
       tableBodyComponent,
-      tableFooterComponent,
+      tableFootComponent,
       columns,
-      rect,
-      scrollbarState,
-      onScroll,
-      onResize
+      scrollbar,
+      onScroll
     }
   },
   render () {
-    const { scrollbarState, rect, data } = this
-    const { positionIsStart, positionIsEnd, hasX, hasY } = scrollbarState
-
+    const { hasX, isScrollStart, isScrollEnd } = this.scrollbar
     return h('div', {
       class: ['yuumi-table', 'size__' + this.size, {
         '__border': this.border,
         '__stripe': this.stripe,
-        '__scroll-start': hasX.value && positionIsStart.value,
-        '__scroll-end': hasX.value && positionIsEnd.value
+        '__scroll-start': hasX.value && isScrollStart.value,
+        '__scroll-end': hasX.value && isScrollEnd.value
       }],
-      ref: 'tableElement'
+      ref: 'tableWrapper'
     }, [
-      h(TalbeHeader, { ref: 'tableHeaderComponent' }),
+      h(TableHead, { ref: 'tableHeadComponent' }),
       h(TableBody, {
-        style: {
-          height: hasY.value ? `${rect.table.height - rect.header.height - rect.footer.height}px` : null,
-        },
         onScroll: this.onScroll,
         ref: 'tableBodyComponent'
       }),
-      this.summary && h(TableFooter, { ref: 'tableFooterComponent' })
+      this.summary &&  h(TableFoot, { ref: 'tableFootComponent' }),
     ])
   }
 })
