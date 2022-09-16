@@ -1,4 +1,5 @@
 <template>
+<!-- 如果只是一两层，使用pros问题不大，但是多层时，务必使用 $attrs 进行属性透传 -->
 <span :class="[family, 'icon-'+icon]" v-bind="$attrs">
   <slot></slot>
 </span>

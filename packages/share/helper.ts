@@ -181,6 +181,12 @@ export function arrayPatch (oldValue: any[], newValue: any[]) {
   return oldValue
 }
 
+/**
+ *
+ * @param start inclusive
+ * @param end exclusive
+ * @param cb
+ */
 export function createRange (start: number, end: number, cb?: (item: number) => any) {
   const range = []
   for (let i = start; i < end; i++) {

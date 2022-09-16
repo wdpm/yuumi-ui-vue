@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-import type { Ref } from 'vue'
-import { defineComponent, ref } from 'vue'
-import { isValidComponentSize, isValidComponentTheme } from '../../../share/validator'
+import type {Ref} from 'vue'
+import {defineComponent, ref} from 'vue'
+import {isValidComponentSize, isValidComponentTheme} from '../../../share/validator'
 
 export default defineComponent({
   name: 'YuumiButton',
@@ -36,18 +36,18 @@ export default defineComponent({
     circle: Boolean,
     round: Boolean
   },
-  data () {
+  data() {
     return {
       splashs: []
     }
   },
   emits: ['click'],
-  setup (props, { emit }) {
+  setup(props, {emit}) {
     const buttonEl: Ref<any> = ref(null)
     const animationEl: Ref<any> = ref(null)
 
-    function addSplash (e: MouseEvent) {
-      const { left, top, width } = buttonEl.value.getBoundingClientRect()
+    function addSplash(e: MouseEvent) {
+      const {left, top, width} = buttonEl.value.getBoundingClientRect()
       const size = Math.max(e.pageX - left, width - (e.pageX - left))
       const splash = {
         size: size * 2,
@@ -55,7 +55,8 @@ export default defineComponent({
         y: e.pageY - (document.body.scrollTop || document.documentElement.scrollTop) - top - size
       }
       const element = document.createElement('span')
-      element.setAttribute('style', `left: ${splash.x}px; top: ${splash.y}px; width: ${splash.size}px; height: ${splash.size}px;`)
+      element.setAttribute('style', `left: ${splash.x}px; top: ${splash.y}px;
+        width: ${splash.size}px; height: ${splash.size}px;`)
 
       const parentElement: any = animationEl.value
       parentElement.insertBefore(element, parentElement.firstChild)
@@ -65,7 +66,7 @@ export default defineComponent({
       }, 300)
     }
 
-    function onclick (e: MouseEvent) {
+    function onclick(e: MouseEvent) {
       if (props.splash && props.theme) addSplash(e)
       emit('click', e)
     }
@@ -153,7 +154,7 @@ export default defineComponent({
       color: mix(map-get($--color, "primary"), map-get($--color, "dark"), 85%);
     }
 
-    &.__splash{
+    &.__splash {
       &:hover, &:active {
         border-color: map-get($--color, "primary");
         color: map-get($--color, "primary");
@@ -186,7 +187,7 @@ export default defineComponent({
         background-color: mix(map-get($--color, $key), map-get($--color, "dark"), 85%);
       }
 
-      &.__splash{
+      &.__splash {
         .button__animation > span {
           background-color: rgba(map-get($--color, "white"), 0.25);
         }
@@ -221,7 +222,7 @@ export default defineComponent({
           }
         }
 
-        &.__splash{
+        &.__splash {
           .button__animation > span {
             background-color: rgba(map-get($--color, $key), 0.15);
           }

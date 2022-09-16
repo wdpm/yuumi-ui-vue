@@ -78,6 +78,11 @@ export default defineComponent({
     const hasPrefix: Ref<boolean> = ref(isDefined(slots.prefix))
     const hasSuffix: Ref<boolean> = ref(isDefined(slots.suffix))
 
+    // refer: https://developer.mozilla.org/en-US/docs/Web/API/Element/compositionstart_event
+    // 例子：当使用IME输入中文时，会触发 compositionstart，过程为compositionupdate，结束为过程为compositionend
+    // 这里compositionupdating.value相当于一个lock
+
+    // v-model不需要考虑这个情况，因为v-model源码已经处理composition
     const compositionupdating = ref(false)
 
     function valueIsValid (value: string) {
@@ -108,6 +113,7 @@ export default defineComponent({
       }
     }
 
+    //  <input ref="inputEl" type="text"
     // 自动获取焦点 auto focus
     const inputEl: Ref<any> = ref(null)
 
@@ -126,6 +132,8 @@ export default defineComponent({
     function updateClearIconVisible () {
       const _value = Boolean(inputEl.value.value) && isMouseenter.value
 
+      // False, True
+      // True, False
       if (clearIconVisible.value !== _value) {
         clearIconVisible.value = _value
       }
@@ -141,12 +149,14 @@ export default defineComponent({
     function onMouseleave () {
       if (props.readonly || props.disabled) return
       isMouseenter.value = false
+
       if (props.clearable) updateClearIconVisible()
     }
 
     function clearValue () {
       emit('update:modelValue', '')
 
+      // clearValue => value请空 => 既然此时没有内容了，那就应该隐藏X按钮 => 需要调用updateClearIconVisible
       nextTick(() => {
         updateClearIconVisible()
       })
@@ -156,16 +166,17 @@ export default defineComponent({
       // 值是否可用
       let _value = valueIsValid(value) ? value : valueIsValid(oldValue) ? oldValue : ''
 
-      // 初始值是否超出最大长度
+      // 初始值超出最大长度时，截断
       if (props.maxlength && _value.length > props.maxlength) {
         _value = _value.slice(0, props.maxlength)
       }
 
+      // 脏值检测
       if (_value !== value) {
         emit('update:modelValue', _value)
       }
 
-      // 是否显示清楚按钮
+      // 是否显示清除按钮
       if (props.clearable && isMouseenter.value) {
         updateClearIconVisible()
       }

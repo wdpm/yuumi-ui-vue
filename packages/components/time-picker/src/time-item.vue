@@ -3,24 +3,27 @@
     <div class="time-item__split" ref="split"></div>
 
     <YuumiScrollbar @init="onInit" @scroll="onScroll">
+      <!--  上方空间保持高度    -->
       <div class="item__prefix" :style="{height: horizontalPadding}"></div>
+      <!--  一行    -->
       <div :class="['time-item', {
         selected: selected && selected.value === item.value,
         disabled: item.disabled
       }]"
-        v-for="(item, index) in list" :key="item.value"
-        @click="onItemSelect(item, index)"
+           v-for="(item, index) in list" :key="item.value"
+           @click="onItemSelect(item, index)"
       >
-        {{item.text}}
+        {{ item.text }}
       </div>
+      <!-- 下方空间保持高度 -->
       <div class="item__suffix" :style="{height: horizontalPadding}"></div>
     </YuumiScrollbar>
   </div>
 </template>
 
 <script lang="ts">
-import { getValueByPath } from '../../../share/helper'
-import { defineComponent } from 'vue'
+import {getValueByPath} from '../../../share/helper'
+import {defineComponent} from 'vue'
 
 export default defineComponent({
   name: 'PickerTimeItem',
@@ -48,7 +51,7 @@ export default defineComponent({
     }
   },
   computed: {
-    list (): Array<{ [key: string]: any}> {
+    list(): Array<{ [key: string]: any }> {
       const arr: any = []
 
       for (let i = 0; i < (this.type === 'hours' ? 24 : 60); i++) {
@@ -77,7 +80,7 @@ export default defineComponent({
       }
     },
     'disabled': function () {
-      let index =  this.list.findIndex(item => item.value === this.modelValue) || 0
+      let index = this.list.findIndex(item => item.value === this.modelValue) || 0
 
       if (this.list[index].disabled) {
         index = this.list.findIndex(item => !item.disabled)
@@ -87,7 +90,7 @@ export default defineComponent({
     }
   },
   methods: {
-    onInit (vm: any) {
+    onInit(vm: any) {
       this.scrollbar = vm
 
       const scrollbarRect = vm.$el.getBoundingClientRect()
@@ -99,8 +102,8 @@ export default defineComponent({
         this.modelValueChanged(this.modelValue)
       })
     },
-    modelValueChanged (modelValue: any) {
-      let index =  this.list.findIndex(item => item.value === modelValue) || 0
+    modelValueChanged(modelValue: any) {
+      let index = this.list.findIndex(item => item.value === modelValue) || 0
 
       if (this.list[index].disabled) {
         index = this.list.findIndex(item => !item.disabled)
@@ -110,7 +113,7 @@ export default defineComponent({
       this.scrollToSelected()
     },
 
-    onScroll (e: any) {
+    onScroll(e: any) {
       this.updateSelected(e.target.scrollTop)
 
       if (this.scrollTimeout) clearTimeout(this.scrollTimeout)
@@ -121,7 +124,7 @@ export default defineComponent({
       }, 200)
     },
 
-    updateSelected (scrollTop: number) {
+    updateSelected(scrollTop: number) {
       if (this.updateSelectedTimeout) return
 
       this.updateSelectedTimeout = setTimeout(() => {
@@ -132,12 +135,12 @@ export default defineComponent({
       }, 32)
     },
 
-    scrollToSelected () {
+    scrollToSelected() {
       if (this.$.isUnmounted) return
       this.scrollbar.$refs.body.scrollTop = this.selected.index * this.itemHeight
     },
 
-    onItemSelect (item: any, index: number) {
+    onItemSelect(item: any, index: number) {
       if (item.disabled) return
 
       if (!this.selected || this.list[index].value !== this.selected.value) {

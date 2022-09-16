@@ -10,8 +10,10 @@ const DEFAULT_OPTION_KEY = {
   disabled: 'disabled'
 }
 
+// TODO READ
 export default defineComponent({
   name: 'YuumiCascader',
+  // 表示将attrs直接透传给子级元素
   inheritAttrs: false,
   props: {
     modelValue: { type: Array },
@@ -29,7 +31,8 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
-    const { isLeaf, getNodeLabel, getNodeValue, getNodeDisabled, getSelectedByModelValue, getMenusBySelected, selected2string } = useHelper()
+    const { isLeaf, getNodeLabel, getNodeValue, getNodeDisabled, getSelectedByModelValue, getMenusBySelected,
+      selected2string } = useHelper()
 
     const popperComponent = ref()
     const scrollbarComponents: Ref<any[]> = ref([])
@@ -100,7 +103,8 @@ export default defineComponent({
       if (value.toString() === (oldValue || '').toString()) return
 
       selected.value = getSelectedByModelValue()
-    }, { deep: true, immediate: true })
+    },
+        { deep: true, immediate: true })
 
     watch((): string => selected2string(selected.value), (value, oldValue) => {
       if (value === oldValue) return

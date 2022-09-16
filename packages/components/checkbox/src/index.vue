@@ -38,9 +38,11 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
-    const { isCheckboxGroup, modelValue, disabled, onChange, updateGroupModelValue } = inject('YuumiCheckboxGroup', {}) as any
+    const { isCheckboxGroup, modelValue, disabled, onChange, updateGroupModelValue }
+        = inject('YuumiCheckboxGroup', {}) as any
 
-    const checkboxChecked: ComputedRef<boolean> = computed(() => isCheckboxGroup ? (modelValue.value || []).indexOf(props.unique) > -1 : Boolean(props.modelValue))
+    const checkboxChecked: ComputedRef<boolean>
+        = computed(() => isCheckboxGroup ? (modelValue.value || []).indexOf(props.unique) > -1 : Boolean(props.modelValue))
     const checkboxDisabled  = computed(() => isCheckboxGroup ? disabled.value : props.disabled)
 
     function onClick () {

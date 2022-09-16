@@ -26,6 +26,7 @@ export default defineComponent({
   props: {
     modelValue: [String, Number, Boolean],
     disabled: Boolean,
+    // unique表示某个选项的ID标识，例如ID1，ID2
     unique: {
       type: [String, Number, Boolean],
       required: true
@@ -53,7 +54,8 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
-    const {isRadioGroup, modelValue, disabled, onChange, updateModelValue } = inject('YuumiRadioGroup', {}) as any
+    const {isRadioGroup, modelValue, disabled, onChange, updateModelValue }
+        = inject('YuumiRadioGroup', {}) as any
 
     const radioChecked = computed(() => (isRadioGroup ? modelValue.value : props.modelValue) === props.unique)
     const radioDisabled  = computed(() => isRadioGroup ? disabled.value : props.disabled)

@@ -18,6 +18,10 @@ export interface CreateAlertOptions {
   onConfirm?: Function
 }
 
+/**
+ * Alert extends from Dialog
+ * @param options
+ */
 function getPartialAlert (options: CreateAlertOptions) {
   const {content, title, ..._props} = options
   let vnode: VNode|null = createVNode({
@@ -55,6 +59,7 @@ function getPartialAlert (options: CreateAlertOptions) {
 
 export const createAlert = function (options: CreateAlertOptions) {
   const vnode = getPartialAlert(options)
+  //_instance is Vue 3 ComponentInternalInstance
   const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
 
   if (alerts) {

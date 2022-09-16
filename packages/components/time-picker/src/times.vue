@@ -1,13 +1,16 @@
 <template>
   <div class="picker-times">
-    <picker-time-item v-if="hourEnabled" type="hours" v-model="hoursValue" :disabled="disabledHours && disabledHours()"></picker-time-item>
-    <picker-time-item v-if="minuteEnabled" type="minutes" v-model="minutesValue" :disabled="disabledMinutes && disabledMinutes({hours})"></picker-time-item>
-    <picker-time-item v-if="secondEnabled" type="seconds" v-model="secondsValue" :disabled="disabledSeconds && disabledSeconds({hours, minutes})"></picker-time-item>
+    <picker-time-item v-if="hourEnabled" type="hours" v-model="hoursValue"
+                      :disabled="disabledHours && disabledHours()"></picker-time-item>
+    <picker-time-item v-if="minuteEnabled" type="minutes" v-model="minutesValue"
+                      :disabled="disabledMinutes && disabledMinutes({hours})"></picker-time-item>
+    <picker-time-item v-if="secondEnabled" type="seconds" v-model="secondsValue"
+                      :disabled="disabledSeconds && disabledSeconds({hours, minutes})"></picker-time-item>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch } from 'vue'
+import {computed, defineComponent, ref, toRefs, watch} from 'vue'
 import TimeItem from './time-item.vue'
 
 export default defineComponent({
@@ -28,22 +31,22 @@ export default defineComponent({
     seconds: Number
   },
   computed: {
-    hourEnabled (): boolean {
+    hourEnabled(): boolean {
       return /h/.test(this.format)
     },
-    minuteEnabled (): boolean {
+    minuteEnabled(): boolean {
       return /m/.test(this.format)
     },
-    secondEnabled (): boolean {
+    secondEnabled(): boolean {
       return /s/.test(this.format)
     }
   },
-  setup (props, { emit }) {
+  setup(props, {emit}) {
     const hoursValue = computed({
       get: () => props.hours,
       set: value => {
         if (value !== props.hours) {
-          emit('change', { value, method: 'setHours' })
+          emit('change', {value, method: 'setHours'})
         }
       }
     })
@@ -52,7 +55,7 @@ export default defineComponent({
       get: () => props.minutes,
       set: value => {
         if (value !== props.minutes) {
-          emit('change', { value, method: 'setMinutes' })
+          emit('change', {value, method: 'setMinutes'})
         }
       }
     })
@@ -61,7 +64,7 @@ export default defineComponent({
       get: () => props.seconds,
       set: value => {
         if (value !== props.seconds) {
-          emit('change', { value, method: 'setSeconds' })
+          emit('change', {value, method: 'setSeconds'})
         }
       }
     })

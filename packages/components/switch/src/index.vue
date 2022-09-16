@@ -98,6 +98,7 @@ $space: 2px;
   .switch__content {
     width: 200%;
     height: 100%;
+    // 因为初始化为[----ON][OFF----] -50%表示自身左移50%。也就在容器内显示[OFF---]
     transform: translateX(-50%);
     transition: transform 0.15s;
 
