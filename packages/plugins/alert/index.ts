@@ -30,6 +30,9 @@ function getPartialAlert (options: CreateAlertOptions) {
         show: true
       }
     },
+    beforeCreate() {
+      // generate instance UID in here. Try using global mixin.
+    },
     render () {
       const _YuumiDialog = resolveComponent('YuumiDialog')
       const props = mergeProps({
@@ -38,7 +41,9 @@ function getPartialAlert (options: CreateAlertOptions) {
           this.show = value
         },
         'onAfterLeave': () => {
+          // REMOVE　alert instance
           const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
+          // improve perf: find by ID, not by === operator
           const index = alerts.findIndex((item: any) => item === vnode)
           if (index > -1) { alerts.splice(index, 1)}
           vnode = null
@@ -59,7 +64,7 @@ function getPartialAlert (options: CreateAlertOptions) {
 
 export const createAlert = function (options: CreateAlertOptions) {
   const vnode = getPartialAlert(options)
-  //_instance is Vue 3 ComponentInternalInstance
+  // App.getInstance.getProxy
   const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
 
   if (alerts) {

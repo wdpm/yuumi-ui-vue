@@ -3,6 +3,7 @@ import { createApp, defineComponent} from 'vue'
 
 import { YuumiButton, YuumiDialog, YuumiIcon, YuumiWarning } from '../'
 
+//　use pluginApp to manage some plugins(etc. alert) instances
 let pluginApp: App|null = null
 export const pluginAppComponent = defineComponent({
   data () {
@@ -18,6 +19,8 @@ export const pluginAppComponent = defineComponent({
   }
 })
 
+// TODO Maybe we should use an UID to identify every plugin instance.
+// https://github.com/vuejs/vue/issues/5886#issuecomment-308647738
 export function getPluginApp () {
   if (pluginApp) return pluginApp
 

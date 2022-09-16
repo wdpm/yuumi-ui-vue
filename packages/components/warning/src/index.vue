@@ -33,6 +33,7 @@ export default defineComponent({
     background-color: map-get($--color, "light");
   }
 
+  // variants override color/bg-color/border-color
   @each $key in ("primary", "warn", "success", "error") {
     &.theme__#{$key} {
       @if $key != "warn" {

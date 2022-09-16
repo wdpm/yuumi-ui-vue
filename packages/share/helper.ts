@@ -14,6 +14,7 @@ export function getValueByPath<T = any> (data: any, path: string, resolve?: any)
   return (data === null || data === undefined) && resolve !== undefined ? resolve : data
 }
 
+// get the value of attr of a certain html element
 export function getCss (element: any, attr: string) {
   if (element.currentStyle) {
     return element.currentStyle[attr]

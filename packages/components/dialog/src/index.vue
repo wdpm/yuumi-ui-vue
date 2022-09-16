@@ -1,37 +1,44 @@
 <template>
-<teleport to="body">
-  <transition name="yuumi-dialog" appear
-    @before-enter="beforeEnter"
-    @after-enter="afterEnter"
-    @before-leave="beforeLeave"
-    @after-leave="afterLeave"
-  >
-    <div class="yuumi-dialog" v-bind="$attrs" v-if="modelValue">
-      <div class="dialog-panel">
-        <div class="dialog--header">
-          <div class="dialog-title">
-            <slot name="title">{{title}}</slot>
+  <!-- 使用teleport将内部子元素挂载到body -->
+  <teleport to="body">
+    <transition name="yuumi-dialog" appear
+                @before-enter="beforeEnter"
+                @after-enter="afterEnter"
+                @before-leave="beforeLeave"
+                @after-leave="afterLeave"
+    >
+      <div class="yuumi-dialog" v-bind="$attrs" v-if="modelValue">
+        <!--        {{'stopPenetrate: '+stopPenetrate}}-->
+        <div class="dialog-panel">
+
+          <!--    如果遵循BEM，dialog--header应该改为dialog__header    -->
+          <div class="dialog--header">
+            <div class="dialog-title">
+              <!--  custom slot-->
+              <slot name="title">{{ title }}</slot>
+            </div>
+
+            <YuumiIcon v-if="closeEnable" class="dialog-close" icon="line-close" @click="close"></YuumiIcon>
           </div>
 
-          <YuumiIcon v-if="closeEnable" class="dialog-close" icon="line-close" @click="close"></YuumiIcon>
-        </div>
-        <div :class="['dialog--content', { '_center': alignCenter }]">
-          <slot></slot>
-        </div>
+          <div :class="['dialog--content', { '_center': alignCenter }]">
+            <slot></slot>
+          </div>
 
-        <div class="dialog--footer" v-if="cancelEnable || confirmEnable">
-          <YuumiButton v-if="cancelEnable" @click="cancel">{{cancelText}}</YuumiButton>
-          <YuumiButton v-if="confirmEnable" @click="confirm" theme="primary">{{confirmText}}</YuumiButton>
+          <div class="dialog--footer" v-if="cancelEnable || confirmEnable">
+            <YuumiButton v-if="cancelEnable" @click="cancel">{{ cancelText }}</YuumiButton>
+            <YuumiButton v-if="confirmEnable" @click="confirm" theme="primary">{{ confirmText }}</YuumiButton>
+          </div>
+
         </div>
       </div>
-    </div>
-  </transition>
-</teleport>
+    </transition>
+  </teleport>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { getCss } from '../../../share/helper'
+import {defineComponent} from 'vue'
+import {getCss} from '../../../share/helper'
 
 export default defineComponent({
   name: 'YuumiDialog',
@@ -60,14 +67,16 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
+    // 操作是否为同步，如果为同步，dialog关闭时会立即隐藏。
     sync: {
       type: Boolean,
       default: true
     },
     alignCenter: Boolean,
+    // 禁止穿透
     stopPenetrate: Boolean
   },
-  data () {
+  data() {
     return {
       store: {
         overflow: '',
@@ -78,59 +87,69 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'close', 'cancel', 'confirm', 'beforeEnter', 'afterEnter', 'beforeLeave', 'afterLeave'],
   methods: {
-    hide () {
+    // hide代表dialog隐藏这个行为，因为close或者cancel都会触发这个行为，因此才抽象出来作为一个函数重用
+    hide() {
       if (!this.sync) return
       this.$emit('update:modelValue', false)
     },
-    close () {
+    close() {
       this.hide()
       this.$emit('close', false)
     },
-    cancel () {
+    cancel() {
       this.hide()
       this.$emit('cancel', false)
     },
-    confirm () {
+    confirm() {
       this.hide()
       this.$emit('confirm', false)
     },
-    beforeEnter (el: any) {
+    beforeEnter(el: any) {
       this.$emit('beforeEnter', el)
 
       if (this.stopPenetrate) {
         this.saveScrollBehavior()
       }
     },
-    afterEnter (el: any) {
+    afterEnter(el: any) {
       this.$emit('afterEnter', el)
     },
-    beforeLeave (el: any) {
+    beforeLeave(el: any) {
       this.$emit('beforeLeave', el)
     },
-    afterLeave (el: any) {
+    afterLeave(el: any) {
       this.$emit('afterLeave', el)
 
       if (this.stopPenetrate) {
         this.restoreScrollBehavior()
       }
     },
-    saveScrollBehavior () {
+    saveScrollBehavior() {
+      // 原理：如果文档之前存在一定的滚动高度，应该记录body之前的滚动位置，然后在关闭遮罩层的时候把滚动距离设置回来。
+      // remember scroll? attrs
       this.store.scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft
       this.store.scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+      // remember previous overflow value
       this.store.overflow = getCss(document.body, 'overflow') || ''
 
+      // then set overflow to hidden to make the whole page can't be scrolled
+      // body：设置overflow hidden之后，body此时就不能再滚动了。
       this.updateOverflow('hidden')
     },
-    restoreScrollBehavior () {
+    restoreScrollBehavior() {
+      // restore scroll? attrs and overflow
       document.body.scrollLeft = document.documentElement.scrollLeft = this.store.scrollLeft
       document.body.scrollTop = document.documentElement.scrollTop = this.store.scrollTop
       this.updateOverflow(this.store.overflow)
+      //body：现在我又可以滚了
 
+      // reset all store states
       this.store.scrollLeft = 0
       this.store.scrollTop = 0
       this.store.overflow = ''
     },
-    updateOverflow (value: string) {
+    updateOverflow(value: string) {
+      // 'overflow: hidden;' or ""
       let style = document.body.getAttribute('style') || ''
 
       if (/overflow/.test(style)) {
