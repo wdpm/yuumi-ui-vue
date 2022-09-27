@@ -37,7 +37,7 @@
 export default {
   data () {
     return {
-      type: Array(9).fill('line')
+      type: Array(10).fill('line')
     }
   },
   computed: {
@@ -67,7 +67,12 @@ export default {
           "line-search",
           "line-praise",
           "line-screen",
-          "line-order"
+          "line-order",
+          "line-catalog",
+          "line-menu",
+          "line-menu1",
+          "line-share",
+          "line-heart"
         ],
         flat: [
           "flat-add",
@@ -87,7 +92,12 @@ export default {
           "flat-search",
           "flat-praise",
           "flat-screen",
-          "flat-order"
+          "flat-order",
+          "flat-catalog",
+          "flat-menu",
+          "flat-menu1",
+          "flat-share",
+          "flat-heart"
         ]
       }, {
         name: "表单",
@@ -113,7 +123,8 @@ export default {
           "line-shield-info",
           "line-shield-correct",
           "line-calendar",
-          "line-clock"
+          "line-clock",
+          "line-mail"
         ],
         flat: [
           "flat-checkbox-indeterminate",
@@ -133,7 +144,8 @@ export default {
           "flat-shield-info",
           "flat-shield-correct",
           "flat-calendar",
-          "flat-clock"
+          "flat-clock",
+          "flat-mail"
         ]
       }, {
         name: "方向",
@@ -183,7 +195,8 @@ export default {
           "line-user-setting",
           "line-user-disabled",
           "line-user-remove",
-          "line-users"
+          "line-users",
+          "line-user-order"
         ],
         flat: [
           "flat-user",
@@ -191,7 +204,8 @@ export default {
           "flat-user-setting",
           "flat-user-disabled",
           "flat-user-remove",
-          "flat-users"
+          "flat-users",
+          "flat-user-order"
         ]
       }, {
         name: "状态",
@@ -218,6 +232,16 @@ export default {
         ],
         flat: [
           "flat-identity"
+        ]
+      }, {
+        name: "媒体",
+        line: [
+          "line-pause",
+          "line-play"
+        ],
+        flat: [
+          "flat-pause",
+          "flat-play"
         ]
       }]
     }
