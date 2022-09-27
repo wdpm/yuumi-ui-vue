@@ -85,13 +85,13 @@ export default function useHelper ({
     }
 
     return ([] as any[])
-      .concat(createRange(lastMonthLastDay - currentMonthFirstDayWeek + 1, lastMonthLastDay, (item) => Object.assign({
+      .concat(createRange(lastMonthLastDay - currentMonthFirstDayWeek + 1, lastMonthLastDay + 1, (item) => Object.assign({
         className: '_prev-month'
       }, creatItemData(year, month - 1, item))))
-      .concat(createRange(1, currentMonthLastDay, (item) => Object.assign({
+      .concat(createRange(1, currentMonthLastDay + 1, (item) => Object.assign({
         className: '_current-month'
       }, creatItemData(year, month, item))))
-      .concat(createRange(1, 6 * 7 - currentMonthLastDay - currentMonthFirstDayWeek, (item) => Object.assign({
+      .concat(createRange(1, 6 * 7 - currentMonthLastDay - currentMonthFirstDayWeek + 1, (item) => Object.assign({
         className: '_next-month'
       }, creatItemData(year, month + 1, item))))
   }
