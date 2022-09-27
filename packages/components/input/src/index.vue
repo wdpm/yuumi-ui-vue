@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import { isDefined, isValidComponentSize, isInputType, isValidComponentTheme } from '../../../share/validator'
 import { computed, defineComponent, onMounted, ref, watch, nextTick } from 'vue'
 
@@ -180,7 +180,7 @@ export default defineComponent({
     }, { immediate: true })
 
     attrs = (attrs || {})
-    const inputListeners = computed(() => {
+    const inputListeners: ComputedRef<{[x:string]: any}> = computed(() => {
       return {
         onBlur: attrs.onBlur,
         onFocus: attrs.onFocus,

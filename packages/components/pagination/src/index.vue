@@ -23,7 +23,7 @@ export default defineComponent({
   props: {
     page: { type: [Number, String], default: 1, validator: (value: any) => Number(value) >= 0 },
     pageTotal: { type: [Number, String], validator: (value: any) => Number(value) >= 0 },
-    total: { type: [Number, String], validator: (value: any) => Number(value) >= 0},
+    total: { type: [Number, String], validator: (value: any) => Number(value) >= 0, default: 0 },
     totalVisible: { type: Boolean, default: true },
     maxLength: { type: Number, default: 5, validator: (value: number) => {
       return value % 2 === 1 && value >= 3
