@@ -116,6 +116,6 @@ export default [{
   }, {
     name: 'Menu',
     label: '侧边栏菜单组件',
-    path: '/doc/menu'
+    path: '/doc/menus'
   }]
 }]
