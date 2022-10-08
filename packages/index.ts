@@ -1,4 +1,4 @@
-import type { App, VNode } from 'vue'
+import { App, getCurrentInstance, VNode } from 'vue'
 import ButtonPlug from './components/button'
 import CascaderPlug from './components/cascader'
 import CheckboxPlug from './components/checkbox'
@@ -10,6 +10,8 @@ import DrawerPlug from './components/drawer'
 import EmptyPlug from './components/empty'
 import IconPlug from './components/icon'
 import InputPlug from './components/input'
+import MenuPlug from './components/menu'
+import PaginationPlug from './components/pagination'
 import PopperPlug from './components/popper'
 import RadioPlug from './components/radio'
 import RadioGroupPlug from './components/radio-group'
@@ -42,6 +44,8 @@ export * from './components/drawer'
 export * from './components/empty'
 export * from './components/icon'
 export * from './components/input'
+export * from './components/menu'
+export * from './components/pagination'
 export * from './components/popper'
 export * from './components/radio'
 export * from './components/radio-group'
@@ -60,6 +64,25 @@ export * from './plugins/message'
 export * from './plugins/notification'
 export * from './plugins/loading'
 
+function getPluginMethods () : YuumiExtension {
+  return {
+    createAlert, removeAlert, removeAllAlert,
+    createMessage, removeMessage, removeAllMessage,
+    createNotification, removeNotification, removeAllNotification,
+    createLoading, removeLoading, removeAllLoading
+  }
+}
+
+export function useYuumiUI (): YuumiExtension {
+  const instance = getCurrentInstance()
+
+  if (instance === null) {
+    throw new Error("Must be called at the top of a `setup` function")
+  }
+
+  return getPluginMethods()
+}
+
 export default {
   install: (app: App): void => {
     app.use(ButtonPlug)
@@ -73,6 +96,8 @@ export default {
     app.use(EmptyPlug)
     app.use(IconPlug)
     app.use(InputPlug)
+    app.use(MenuPlug)
+    app.use(PaginationPlug)
     app.use(PopperPlug)
     app.use(RadioPlug)
     app.use(RadioGroupPlug)
@@ -87,12 +112,7 @@ export default {
     app.use(TreePlug)
     app.use(WarningPlug)
 
-    app.config.globalProperties.$yuumi = {
-      createAlert, removeAlert, removeAllAlert,
-      createMessage, removeMessage, removeAllMessage,
-      createNotification, removeNotification, removeAllNotification,
-      createLoading, removeLoading, removeAllLoading
-    }
+    app.config.globalProperties.$yuumi = getPluginMethods()
 
     app.use(LoadingPlug)
   }

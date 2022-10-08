@@ -24,8 +24,9 @@ export default defineComponent({
     }
   },
   methods: {
-    rowClassName ({row, index}: any) {
-      switch (index % 4) {
+    rowClassName ({ rowIndex }: any) {
+      console.log(rowIndex)
+      switch (rowIndex % 4) {
         case 0:
           return '__success'
         case 1:
@@ -36,8 +37,8 @@ export default defineComponent({
           return '__info'
       }
     },
-    cellClassName ({ column, index, row, rowIndex}: any) {
-      switch ((rowIndex + index) % 4) {
+    cellClassName ({ col, colIndex, row, rowIndex}: any) {
+      switch ((rowIndex + colIndex) % 4) {
         case 0:
           return '__success'
         case 1:

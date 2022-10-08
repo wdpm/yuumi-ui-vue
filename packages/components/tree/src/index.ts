@@ -8,6 +8,7 @@ export default defineComponent({
     data: { type: Array },
     optionKey: { type: Object },
     expandIcon: { type: Object, default: () => ({ icon: 'flat-arrow-bottom' })},
+    expandIconVisible: { type: Boolean, default: true },
     checkable: { type: Boolean, default: true },
     loadData: { type: Function }
   },
@@ -32,18 +33,6 @@ export default defineComponent({
         return nodes.concat(item.getCheckedNodes())
       }, [])
     }
-
-    // function onChecked (detail: any) {
-    //   emit('checked', detail)
-    // }
-
-    // function onNodeExpand (detail: any) {
-    //   emit('node-expand', detail)
-    // }
-
-    // function onNodeClick (detail: any) {
-
-    // }
 
     provide(injectKey, {
       rootProps: props,

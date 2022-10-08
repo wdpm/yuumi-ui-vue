@@ -3,6 +3,7 @@
   {
     '__disabled': disabled,
     '__readonly': readonly,
+    '__round': round,
     '__has-prefix-icon': hasPrefixIcon,
     '__has-suffix-icon': hasSuffixIcon || clearIconVisible,
     '__has-prefix': hasPrefix,
@@ -23,7 +24,7 @@
       <slot name="prefixIcon"></slot>
     </span>
 
-    <input ref="inputEl" type="text" :value="modelValue" @input="onInput"
+    <input ref="inputEl" :type="type" :value="modelValue" @input="onInput" v-bind="inputListeners"
       :disabled="disabled"
       :readonly="readonly"
       :maxlength="maxlength"
@@ -45,9 +46,9 @@
 </template>
 
 <script lang="ts">
-import type { Ref } from 'vue'
-import { isDefined, isValidComponentSize, isValidComponentTheme } from '../../../share/validator'
-import { defineComponent, onMounted, ref, watch, nextTick } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
+import { isDefined, isValidComponentSize, isInputType, isValidComponentTheme } from '../../../share/validator'
+import { computed, defineComponent, onMounted, ref, watch, nextTick } from 'vue'
 
 export default defineComponent({
   name: 'YuumiInput',
@@ -69,9 +70,15 @@ export default defineComponent({
       default: 'default'
     },
     limit: [Function, RegExp],
-    clearable: Boolean
+    clearable: Boolean,
+    round: Boolean,
+    type: {
+      type: String,
+      validator: isInputType,
+      default: 'text'
+    }
   },
-  setup (props, { emit, slots }) {
+  setup (props, { emit, slots, attrs }) {
     // 是否有插槽
     const hasPrefixIcon: Ref<boolean> = ref(isDefined(slots.prefixIcon))
     const hasSuffixIcon: Ref<boolean> = ref(isDefined(slots.suffixIcon))
@@ -105,6 +112,7 @@ export default defineComponent({
 
       if (!compositionupdating.value) {
         emit('update:modelValue', target.value)
+        emit('input', e)
       }
     }
 
@@ -171,6 +179,18 @@ export default defineComponent({
       }
     }, { immediate: true })
 
+    attrs = (attrs || {})
+    const inputListeners: ComputedRef<{[x:string]: any}> = computed(() => {
+      return {
+        onBlur: attrs.onBlur,
+        onFocus: attrs.onFocus,
+        onChange: attrs.onChange,
+        onKeydown: attrs.onKeydown,
+        onKeyup: attrs.onKeyup,
+        onKeypress: attrs.onKeypress
+      }
+    })
+
     return {
       hasPrefixIcon,
       hasSuffixIcon,
@@ -184,7 +204,8 @@ export default defineComponent({
       isMouseenter,
       onMouseenter,
       onMouseleave,
-      clearValue
+      clearValue,
+      inputListeners
     }
   }
 })
@@ -241,7 +262,6 @@ export default defineComponent({
   }
 
   .input__prefix-icon, .input__suffix-icon {
-    width: map-get($--space, "lg");
     text-align: center;
     position: absolute;
     top: 50%;
@@ -301,6 +321,10 @@ export default defineComponent({
     &.size__#{$key} {
       height: $value;
 
+      .input__prefix-icon, .input__suffix-icon  {
+        width: $value;
+      }
+
       input {
         height: $value;
         padding: 0 $value*0.25;
@@ -312,6 +336,10 @@ export default defineComponent({
 
       &.__has-suffix-icon input {
         padding-right: $value;
+      }
+
+      &.__round input {
+        border-radius: $value;
       }
     }
   }

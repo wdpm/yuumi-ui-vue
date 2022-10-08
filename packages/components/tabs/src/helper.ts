@@ -6,7 +6,7 @@ export function getTabItemsFromSlot (childName: string, slot?: Slot) {
 
   function walker (vnodes: VNode[]) {
     vnodes.forEach((vnode) => {
-      if (vnode.type.toString() === 'Symbol(Fragment)') {
+      if (vnode.type.toString() === 'Symbol(Fragment)' || vnode.type.toString() === 'Symbol()') {
         walker(vnode.children as VNode[] || [])
         return
       }
