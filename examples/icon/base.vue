@@ -207,10 +207,12 @@ export default {
       }, {
         name: "状态",
         line: [
-          "line-empty"
+          "line-empty",
+          "line-finger"
         ],
         flat: [
-          "flat-empty"
+          "flat-empty",
+          "flat-finger"
         ]
       }, {
         name: "交通",
@@ -234,11 +236,19 @@ export default {
         name: "媒体",
         line: [
           "line-pause",
-          "line-play"
+          "line-play",
+          "line-voice",
+          "line-muted",
+          "line-fullscreen",
+          "line-fullscreen-exit"
         ],
         flat: [
           "flat-pause",
-          "flat-play"
+          "flat-play",
+          "flat-voice",
+          "flat-muted",
+          "flat-fullscreen",
+          "flat-fullscreen-exit"
         ]
       }]
     }

@@ -13,6 +13,46 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-flat-finger:before {
+  content: "\e763";
+}
+
+.icon-line-finger:before {
+  content: "\e764";
+}
+
+.icon-line-fullscreen-exit:before {
+  content: "\e75f";
+}
+
+.icon-flat-fullscreen:before {
+  content: "\e760";
+}
+
+.icon-flat-fullscreen-exit:before {
+  content: "\e761";
+}
+
+.icon-line-fullscreen:before {
+  content: "\e762";
+}
+
+.icon-flat-muted:before {
+  content: "\e75b";
+}
+
+.icon-line-muted:before {
+  content: "\e75c";
+}
+
+.icon-flat-voice:before {
+  content: "\e75d";
+}
+
+.icon-line-voice:before {
+  content: "\e75e";
+}
+
 .icon-flat-menu:before {
   content: "\e757";
 }
