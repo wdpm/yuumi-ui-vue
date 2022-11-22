@@ -1,5 +1,5 @@
 <template>
-  <YuumiSelect :options="options" v-model="value" style="margin: 0 10px 10px 0;" @change="log"></YuumiSelect>
+  <YuumiSelect :options="options" v-model="value" style="margin: 0 10px 0 0; width: 100%;" @change="log"></YuumiSelect>
   <YuumiSelect v-for="theme in ['primary', 'success', 'warn', 'error']" :key="theme"
     style="margin: 0 10px 10px 0;"
     :options="options"
@@ -29,6 +29,7 @@ export default {
         { label: '樱桃', value: '樱桃' },
         { label: '柚子', value: '柚子' },
         { label: '西瓜', value: '西瓜' },
+        { label: '阳光玫瑰青提', value: '阳光玫瑰青提' },
         { label: '哈密瓜', value: '哈密瓜' }
       ]
     }

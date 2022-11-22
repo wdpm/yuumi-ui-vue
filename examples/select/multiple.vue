@@ -1,5 +1,5 @@
 <template>
-  <YuumiSelect :options="options" v-model="value" style="margin: 0 10px 10px 0;" multiple></YuumiSelect>
+  <YuumiSelect :options="options" v-model="value" style="margin: 0 10px 0 0; width: 100%;" multiple></YuumiSelect>
   <YuumiSelect v-for="theme in ['primary', 'success', 'warn', 'error']" :key="theme" multiple
     style="margin: 0 10px 10px 0;"
     :options="options"

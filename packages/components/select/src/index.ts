@@ -1,6 +1,6 @@
 import { arrayPatch } from '../../../share/helper'
 import { isValidComponentSize, isValidComponentTheme } from '../../../share/validator'
-import { computed, createVNode, defineComponent, Fragment, h, mergeProps, nextTick, ref, resolveComponent, watch } from 'vue'
+import { computed, createVNode, defineComponent, Fragment, h, mergeProps, nextTick, onMounted, ref, resolveComponent, watch } from 'vue'
 import type { Ref } from 'vue'
 import useClear from './clear-helper'
 import useHelper from './helper'
@@ -50,6 +50,11 @@ export default defineComponent({
     function onBeforeLeave () {
       if (props.filterable) restoreKeywordValue()
     }
+
+    onMounted(() => {
+      // fixed: 弹出层和目标层宽度不一致
+      nextTick(updateOptionsMinWidth)
+    })
 
     watch(() => props.modelValue, () =>{
       let _selectedItems: any[] = []
