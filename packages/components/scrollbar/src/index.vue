@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 
 export default defineComponent({
   name: 'YuumiScrollbar',
@@ -33,7 +33,7 @@ export default defineComponent({
   },
   emits: ['init', 'scroll'],
   mounted () {
-    this.$nextTick(() => {
+    nextTick(() => {
       this.updateBodyStyle()
       this.updateVerticalStyle()
       this.updateHorizontalStyle()
@@ -43,7 +43,7 @@ export default defineComponent({
     })
   },
   updated () {
-    this.$nextTick(() => {
+    nextTick(() => {
       this.updateBodyStyle()
       this.updateVerticalStyle()
       this.updateHorizontalStyle()

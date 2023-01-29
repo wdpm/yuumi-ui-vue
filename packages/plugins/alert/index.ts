@@ -1,6 +1,6 @@
 import './index.scss';
 import { createVNode, h, mergeProps, resolveComponent } from 'vue'
-import { getPluginApp } from '..'
+import { getPluginAppComponentInstance } from '..'
 import type { VNode } from 'vue'
 
 export interface CreateAlertOptions {
@@ -18,10 +18,6 @@ export interface CreateAlertOptions {
   onConfirm?: Function
 }
 
-/**
- * Alert extends from Dialog
- * @param options
- */
 function getPartialAlert (options: CreateAlertOptions) {
   const {content, title, ..._props} = options
   let vnode: VNode|null = createVNode({
@@ -29,9 +25,6 @@ function getPartialAlert (options: CreateAlertOptions) {
       return {
         show: true
       }
-    },
-    beforeCreate() {
-      // generate instance UID in here. Try using global mixin.
     },
     render () {
       const _YuumiDialog = resolveComponent('YuumiDialog')
@@ -41,9 +34,7 @@ function getPartialAlert (options: CreateAlertOptions) {
           this.show = value
         },
         'onAfterLeave': () => {
-          // REMOVE　alert instance
-          const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
-          // improve perf: find by ID, not by === operator
+          const { alerts } = (getPluginAppComponentInstance()?.proxy) || {} as any
           const index = alerts.findIndex((item: any) => item === vnode)
           if (index > -1) { alerts.splice(index, 1)}
           vnode = null
@@ -64,8 +55,7 @@ function getPartialAlert (options: CreateAlertOptions) {
 
 export const createAlert = function (options: CreateAlertOptions) {
   const vnode = getPartialAlert(options)
-  // App.getInstance.getProxy
-  const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
+  const { alerts } = (getPluginAppComponentInstance()?.proxy) || {} as any
 
   if (alerts) {
     alerts.push(vnode)
@@ -81,7 +71,7 @@ export const removeAlert = function (vnode: VNode) {
 }
 
 export const removeAllAlert = function () {
-  const { alerts } = (getPluginApp()._instance?.proxy) || {} as any
+  const { alerts } = (getPluginAppComponentInstance()?.proxy) || {} as any
   if (alerts) {
     alerts.forEach((item: VNode) => removeAlert(item))
   }

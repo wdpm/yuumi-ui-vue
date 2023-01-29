@@ -1,13 +1,13 @@
-import { getValueByPath } from '../../../share/helper'
+import { getValueByPath, equal } from '../../../share/helper'
 import { isDefined, isValidAlign, isValidTableColumnFixed, isValidTableColumnType, tableColumnType } from '../../../share/validator'
-import { defineComponent, h, inject, ref, resolveComponent, watch } from 'vue'
-import { ProvideState } from './provider-helper'
-import type { Ref } from 'vue'
+import { computed, defineComponent, h, inject, ref, Ref, resolveComponent, watch } from 'vue'
+import { injectionKey, ProvideGetters } from './provide-helper'
+import { TableSelection } from './selection-helper'
 
 export default defineComponent({
   name: 'YuumiTableColumn',
   props: {
-    width: { type: Number, default: 75 },
+    width: { type: Number, default: 100 },
     title: { type: String },
     prop: { type: String },
     placeholder: { type: String, default: '-' },
@@ -22,59 +22,76 @@ export default defineComponent({
     }
   },
   setup (props, { attrs }) {
-    const { tableInstance, selections, selectionChanged } = inject('state') as ProvideState
-    const { data } = tableInstance.props as any
+    const { getters, selection } = inject(injectionKey) as { getters: ProvideGetters, selection: TableSelection }
+    const { rootProps } = getters
+    const { selections, selectionChanged } = selection
 
-    const checked: Ref<boolean> = ref(selections.value.some(item => item === data[attrs.rowIndex as number]))
+    const isInSelections = computed(() => selections.value.some(item => equal(item, rootProps.value.data[attrs.rowIndex as number])))
+    const checked: Ref<boolean> = ref(isInSelections)
 
     watch(() => selections.value.length, (value, oldValue) => {
       if (value === oldValue) return
 
-      const _checked = selections.value.some(item => item === data[attrs.rowIndex as number])
-      if (_checked !== checked.value) {
-        checked.value = _checked
+      if (isInSelections.value !== checked.value) {
+        checked.value = isInSelections.value
+      }
+    })
+
+    watch(() => isInSelections.value, (value) => {
+      if (value !== checked.value) {
+        checked.value = value
       }
     })
 
     return {
-      data,
+      rootProps,
+      isInSelections,
       checked,
       selectionChanged
     }
   },
-  render () {
-    const { align, type, data, $attrs } = this
+  methods: {
+    getSelectionContent () {
+      const checkboxComponent = resolveComponent('YuumiCheckbox')
+      return [h(checkboxComponent, {
+        unique: this.$attrs.rowIndex,
+        modelValue: this.checked,
+        style: {
+          height: '1em'
+        },
+        'onUpdate:modelValue': (value: boolean) => {
+          this.checked = value
+        },
+        'onChange': this.selectionChanged
+      })]
+    },
+    getColumnContent () {
+      if (this.type === tableColumnType.selection) return this.getSelectionContent()
 
-    const getColumnContent = () => {
-      if (type === tableColumnType.selection) {
-        const checkboxComponent = resolveComponent('YuumiCheckbox')
-        return [h(checkboxComponent, {
-          unique: $attrs.rowIndex,
-          modelValue: this.checked,
-          style: {
-            height: '1em'
-          },
-          'onUpdate:modelValue': (value: boolean) => {
-            this.checked = value
-          },
-          'onChange': this.selectionChanged
-        })]
+      let value
+      if (typeof this.prop === 'string') {
+        value = getValueByPath(this.rootProps.data, `[${this.$attrs.rowIndex}][${this.prop}]`)
       }
 
-      const value = typeof this.prop === 'string' ? getValueByPath(data, `[${$attrs.rowIndex}][${this.prop}]`, this.placeholder) : this.placeholder
+      if (typeof value !== 'number' && !value) {
+        value = this.placeholder
+      }
 
       if (this.$slots.default) {
-        return this.$slots.default({$props: this.$props, $attrs, $value: value})
+        return this.$slots.default({$props: this.$props, $attrs: this.$attrs, $value: value})
       }
 
       return value
     }
+  },
+  render () {
+    const { align, type } = this
 
     return h('div', {
       class: ['column', align && `_${align}`],
       style: {
         fontSize: isDefined(type) ? '0px' : null
       }
-    }, getColumnContent())
+    }, this.getColumnContent())
   }
 })

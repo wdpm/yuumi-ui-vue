@@ -49,6 +49,10 @@ export function isValidPopperType (value: string) {
   return ['click', 'hover'].indexOf(value) >= 0
 }
 
+export function isInputType (value: string) {
+  return ['text', 'password'].indexOf(value) >= 0
+}
+
 export const tableColumnType = {
   selection: 'selection'
 }

@@ -1,3 +1,4 @@
+const pkg = require("./package.json")
 import { defineConfig } from 'vite'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
@@ -47,7 +48,7 @@ function getLibraryConfig () {
 export default defineConfig(({ mode }) => {
   let config = {
     define: {
-      __APP_VERSION__: "'1.0.0'"
+      __APP_VERSION__: `"${pkg.version}"`
     }
   }
 

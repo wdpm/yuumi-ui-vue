@@ -396,7 +396,7 @@ export default defineComponent({
           h(_YuumiTimePicker, {
             immediate: true,
             placeholder: $props.timePlaceholder,
-            disabled: !endSelectDate,
+            disabled: !startSelectDate,
             disabledHours: $props.disabledHours,
             disabledMinutes: $props.disabledMinutes,
             disabledSeconds: $props.disabledSeconds,

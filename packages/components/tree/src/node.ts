@@ -185,6 +185,7 @@ export default defineComponent({
 
       // expand
       expandIcon: computed(() => rootProps.expandIcon),
+      expandIconVisible: computed(() => rootProps.expandIconVisible),
       checkboxComponent,
       isExpandChildren,
       toggleExpand,
@@ -205,6 +206,7 @@ export default defineComponent({
     const getExpandIcon = () => {
       const {
         expandIcon,
+        expandIconVisible,
         isLeaf,
         isExpandChildren,
         loadingState,
@@ -215,7 +217,7 @@ export default defineComponent({
 
       if (childrenLoadState === loadingState.loading) {
         _props = mergeProps({ icon: 'line-loading' })
-      } else if (!isLeaf) {
+      } else if (!isLeaf && expandIconVisible) {
         _props = mergeProps(expandIcon)
       }
 

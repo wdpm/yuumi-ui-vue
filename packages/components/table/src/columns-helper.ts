@@ -1,15 +1,15 @@
-import { getValueByPath } from '../../../share/helper'
 import { YuumiTableColumn } from '../index'
-import type { Slot, VNode } from 'vue'
+import { getValueByPath } from '../../../share/helper'
+import { Slot, VNode } from 'vue'
 
-export function getColumnsFromDefaultSlot (slot?: Slot) {
+export function getColumnsFromSlot(slot?: Slot) {
   const fixedLeft: VNode[] = []
   const fixedRight: VNode[] = []
   const general: VNode[] = []
 
-  function walker (vnodes: VNode[]) {
+  ;(function walker (vnodes: VNode[]) {
     vnodes.forEach((vnode) => {
-      if (vnode.type.toString() === 'Symbol(Fragment)') {
+      if (vnode.type.toString() === 'Symbol(Fragment)' || vnode.type.toString() === 'Symbol()') {
         walker(vnode.children as VNode[] || [])
         return
       }
@@ -24,9 +24,7 @@ export function getColumnsFromDefaultSlot (slot?: Slot) {
         general.push(vnode)
       }
     })
-  }
-
-  walker(slot ? slot() : [])
+  })(slot ? slot() : [])
 
   return fixedLeft.concat(general, fixedRight)
 }

@@ -86,6 +86,10 @@ export default [{
 }, {
   label: '其他',
   children: [{
+    name: 'Pagination',
+    label: '分页',
+    path: '/doc/pagination'
+  }, {
     name: 'Divider',
     label: '分割线',
     path: '/doc/divider'
@@ -109,5 +113,9 @@ export default [{
     name: 'Tree',
     label: '树形组件',
     path: '/doc/tree'
+  }, {
+    name: 'Menu',
+    label: '侧边栏菜单组件',
+    path: '/doc/menus'
   }]
 }]

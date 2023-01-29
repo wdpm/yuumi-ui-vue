@@ -1,13 +1,13 @@
 import './index.scss';
 import { h, createVNode, resolveComponent, Transition, Teleport } from 'vue'
-import { getPluginApp } from '..';
+import { getPluginAppComponentInstance } from '..';
 import { isDefined } from '../../share/validator';
 import type { VNode } from 'vue'
 
 export interface CreateMessageOptions {
   message: string
   icon?: VNode
-  theme?: 'primary'|'warn'|'error'|'succss'
+  theme?: 'primary'|'warn'|'error'|'success'
   duration?: number
   align?: boolean
   offset?: number
@@ -79,7 +79,7 @@ function getPartialMessage (options: CreateMessageOptions) {
           name: 'yuumi-message',
           appear: true, // extend BaseTransitionProps
           'onAfterLeave': () => {
-            const { messages } = (getPluginApp()._instance?.proxy) || {} as any
+            const { messages } = (getPluginAppComponentInstance()?.proxy) || {} as any
             const index = messages.findIndex((item: VNode) => item === vnode)
             if (index > -1) { messages.splice(index, 1) }
             vnode = null as any
@@ -95,7 +95,7 @@ function getPartialMessage (options: CreateMessageOptions) {
 }
 
 function updateMessageTop (vnode: VNode) {
-  const { messages } = (getPluginApp()._instance?.proxy) || {} as any
+  const { messages } = (getPluginAppComponentInstance()?.proxy) || {} as any
   if (!messages) return
 
   let vnodeIndex = -1
@@ -130,7 +130,7 @@ export const createMessage = function (options: CreateMessageOptions) {
     options.duration = 3000
   }
   const vnode = getPartialMessage(options)
-  const { messages } = (getPluginApp()._instance?.proxy) || {} as any
+  const { messages } = (getPluginAppComponentInstance()?.proxy) || {} as any
 
   if (messages) { messages.push(vnode) }
 
@@ -144,7 +144,7 @@ export const removeMessage = function (vnode: VNode) {
 }
 
 export const removeAllMessage = function () {
-  const { messages } = (getPluginApp()._instance?.proxy) || {} as any
+  const { messages } = (getPluginAppComponentInstance()?.proxy) || {} as any
   if (messages) {
     messages.forEach((item: VNode) => removeMessage(item))
   }
