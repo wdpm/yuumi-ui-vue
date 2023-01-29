@@ -15,6 +15,7 @@ export default defineComponent({
     const { default: defaultSlot, content: contentSlot } = this.$slots
     const YuumiPopper = resolveComponent('YuumiPopper')
 
+    // Refer internal popper component
     return h(Fragment, null, [
       h(createVNode(YuumiPopper, {
         class: ['yuumi-tooltip', `theme__${theme}`],

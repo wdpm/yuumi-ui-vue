@@ -28,6 +28,9 @@ function getPartialMessage (options: CreateMessageOptions) {
     },
     mounted () {
       this.addTimeout()
+      // nextTick: wait for DOM update
+      // Defer the callback to be executed after the next DOM update cycle.
+      // Use it immediately after you’ve changed some data to wait for the DOM update
       this.$nextTick(() => {
         this.$refs.message.$el.classList.add('appeared')
       })
@@ -74,7 +77,7 @@ function getPartialMessage (options: CreateMessageOptions) {
       }, [
         h(Transition, {
           name: 'yuumi-message',
-          appear: true,
+          appear: true, // extend BaseTransitionProps
           'onAfterLeave': () => {
             const { messages } = (getPluginApp()._instance?.proxy) || {} as any
             const index = messages.findIndex((item: VNode) => item === vnode)
@@ -103,6 +106,13 @@ function updateMessageTop (vnode: VNode) {
 
     const { $refs, show, offset }: any = item.component?.proxy
     if (!show) return
+
+    // offset 代表message之间的gap的高度，初始化后不会改变
+    // top 根据items数目进行累加
+    // 例：
+    // 第1个message的TOP= 0 + offset
+    // 第2个message的TOP= offset + 一个message的高度+ offset
+    // ...
 
     if (vnodeIndex >= 0) {
       item.component!.data.top = top + offset

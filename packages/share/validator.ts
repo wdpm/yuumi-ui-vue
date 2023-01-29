@@ -29,7 +29,8 @@ export function isValidNotificationDirection (value: string) {
 }
 
 export function isValidComponentPlacement (value: string) {
-  return ['auto', 'auto-start', 'auto-end', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'right', 'right-start', 'right-end', 'left', 'left-start', 'left-end'].indexOf(value) > -1
+  return ['auto', 'auto-start', 'auto-end', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end',
+    'right', 'right-start', 'right-end', 'left', 'left-start', 'left-end'].indexOf(value) > -1
 }
 
 export function isValidAlign (value: string) {

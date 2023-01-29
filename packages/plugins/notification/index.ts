@@ -68,6 +68,7 @@ function getPartialNotification (options: CreateNotificationOptions) {
         updateNotificationY(vnode)
       },
       addTimeout () {
+        // duration is 0
         if (!this.duration) return
 
         this.timeout = window.setTimeout(() => {
@@ -104,6 +105,7 @@ function getPartialNotification (options: CreateNotificationOptions) {
             onMouseleave: this.addTimeout,
             ref: 'notification'
           }, [
+            //  THINK: use JSX to avoid multiple h function hell
             h('div', { class: 'notification-body' }, [
               h('div', { class: 'notification-icon' }, [
                 options.icon || h(resolveComponent('YuumiIcon'), { icon: this.iconMap[theme] || this.iconMap.primary })
@@ -147,12 +149,18 @@ function updateNotificationY (vnode: VNode) {
     if (item === vnode) { vnodeIndex = index }
 
     const { $refs, show, offset, direction }: any = item.component?.proxy
+
+    // 当出现以下情况，则会直接返回，不需要处理vnode的Y offset的累加问题
+    // 1. item 不显示
+    // 2. item的direction和 vnode direction不一致，说明item是在其他的位置生成的，不会影响目前的vnode。
     if (!show || direction !== _direction) return
 
+    // 找到当前vnode，那就处理当前vnode（这个item就是vnode）的y offset
     if (vnodeIndex >= 0) {
       item.component!.data.y = y + offset
     }
 
+    // 不是当前vnode，那就累加Y offset
     if ($refs.notification) {
       const rect = $refs.notification.getBoundingClientRect()
       y += (offset + rect.height)
@@ -162,8 +170,8 @@ function updateNotificationY (vnode: VNode) {
 
 export const createNotification = function (options: CreateNotificationOptions) {
   const vnode = getPartialNotification(options)
-  const { notifications } = (getPluginApp()._instance?.proxy) || {} as any
 
+  const { notifications } = (getPluginApp()._instance?.proxy) || {} as any
   if (notifications) { notifications.push(vnode) }
 
   return vnode

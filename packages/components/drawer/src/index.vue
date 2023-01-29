@@ -39,6 +39,9 @@ export default defineComponent({
     height: String
   },
   setup (props, { emit }) {
+    // TODO why
+    // why use two variables to reflect show/hide logic?
+    // Is it impossible to use only one variable?
     const visible = ref(props.modelValue)
     const show = ref(props.modelValue)
 
